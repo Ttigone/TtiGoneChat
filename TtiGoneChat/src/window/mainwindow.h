@@ -49,8 +49,9 @@ class MainWindow : public QWidget {
   void setupPasscodeLock();
   void clearPasscodeLock();
 
-  // 首次展示
   void firstShow();
+
+
   /// @brief 最小化托盘
   bool minimizeToTray();
 
