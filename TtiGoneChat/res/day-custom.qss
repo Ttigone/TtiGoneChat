@@ -1,0 +1,43 @@
+QPushButton#Login-icon-button {
+    min-width: 40px;
+    border: none;
+    padding: 0;
+    background-color: transparent;
+}
+
+
+QPushButton#Login-min-button {
+    border: none;
+    padding: 0;
+    background-color: #ffc661;
+}
+
+QPushButton#Login-min-button:hover,
+QPushButton#Login-min-button:pressed {
+    background-color: #cc889d
+}
+
+QPushButton#Login-close-button {
+    border: none;
+    padding: 0;
+    background-color: #ffc661;
+/*    icon: url("qrc:/../icons/login/login_close.svg");*/
+}
+
+QPushButton#Login-close-button:hover,
+QPushButton#Login-close-button:pressed {
+    background-color: #cc889d;
+}
+
+QtMaterialRaisedButton#Login-login-button {
+    qproperty-backgroundColor: #cc9494;
+}
+
+QtMaterialRaisedButton#Login-switch_user-button {
+    qproperty-backgroundColor: #554e4e;
+}
+
+QWidget{
+ /* background-color: #F3F3F3; */
+    background-color: white;
+}

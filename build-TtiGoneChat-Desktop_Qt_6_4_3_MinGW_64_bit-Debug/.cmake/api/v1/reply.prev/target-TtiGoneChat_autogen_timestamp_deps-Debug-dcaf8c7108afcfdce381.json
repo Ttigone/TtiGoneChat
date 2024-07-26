@@ -1,0 +1,42 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"TtiGoneChat/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 0,
+			"id" : "lib_base::@98d6baad97ee299549b1"
+		},
+		{
+			"backtrace" : 0,
+			"id" : "external_qt-material::@4682fb28b05c8907be59"
+		}
+	],
+	"folder" : 
+	{
+		"name" : "(gen)"
+	},
+	"id" : "TtiGoneChat_autogen_timestamp_deps::@27c643c06d42ca1aabab",
+	"isGeneratorProvided" : true,
+	"name" : "TtiGoneChat_autogen_timestamp_deps",
+	"paths" : 
+	{
+		"build" : "TtiGoneChat",
+		"source" : "TtiGoneChat"
+	},
+	"sources" : [],
+	"type" : "UTILITY"
+}
