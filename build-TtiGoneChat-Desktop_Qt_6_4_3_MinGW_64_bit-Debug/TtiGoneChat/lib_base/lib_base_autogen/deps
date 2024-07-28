@@ -1,7 +1,0 @@
-lib_base_autogen/timestamp: \
-	F:/MyProject/TtiGoneChat/TtiGoneChat/lib_base/CMakeLists.txt \
-	F:/MyProject/TtiGoneChat/TtiGoneChat/lib_base/base/basic_pch.h \
-	F:/MyProject/TtiGoneChat/TtiGoneChat/lib_base/base/basic_types.h \
-	F:/MyProject/TtiGoneChat/TtiGoneChat/lib_base/base/integration.cpp \
-	F:/MyProject/TtiGoneChat/TtiGoneChat/lib_base/base/integration.h \
-	D:/qt/qt6/Tools/CMake_64/bin/cmake.exe

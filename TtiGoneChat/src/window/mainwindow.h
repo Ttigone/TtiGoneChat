@@ -1,23 +1,26 @@
 ﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QWidget>
+#include "ui/widgets/mb_window.h"
 #include "core/settings.h"
 
 namespace Core
 {
+struct WindowPosition;
+enum class QuitReason;
 } // namespace Core
+
+
 
 namespace Window {
 
 class Controller;
 class SessionController;
 
-class MainWindow : public QWidget {
+class MainWindow : public Ui::MbWindow {
  public:
   explicit MainWindow(Window::Controller* controller);
   virtual ~MainWindow();
-
 
 
   void showSettings();
@@ -100,6 +103,8 @@ class MainWindow : public QWidget {
   void updateMiniSize();
 
   [[nodiscard]] QRect countInitialGeometry(Core::WindowPosition position) const;
+
+  //QWK::WidgetWindowAgen* window_agent_;
 
   Window::Controller* controller_;
   std::unique_ptr<SessionController> session_controller_;

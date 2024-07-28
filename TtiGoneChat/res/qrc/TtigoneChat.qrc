@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>login_close.svg</file>
+        <file>login_full_screen.svg</file>
+        <file>login_maximize.svg</file>
+        <file>login_minimize.png</file>
+        <file>login_minimize.svg</file>
+    </qresource>
+</RCC>

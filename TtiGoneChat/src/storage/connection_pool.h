@@ -1,4 +1,0 @@
-#ifndef CONNECTION_POOL_H
-#define CONNECTION_POOL_H
-
-#endif  // CONNECTION_POOL_H

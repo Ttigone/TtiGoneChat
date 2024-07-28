@@ -3,11 +3,22 @@
 
 namespace Storage
 {
-void InitaLoadTheme();
+
 void start();
+
+void LoadConfigFile();
+
+void InitaLoadTheme();
+
 void writeSettings();
+
 void rewriteSettingsIfNeeded();
+
 void readLangPack();
+
+
+bool ApplyDefaultNightMode();
+
 
 } // namespace Storage
 

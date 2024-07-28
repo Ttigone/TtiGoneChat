@@ -89,11 +89,8 @@ void SandBox::QuitWhenStarted() {
   // 没有实例或者没有启动
   if (!QApplication::instance() || !Instance().started_) {
     quit_when_started__request = true;
-    qDebug() << "11\n";
-  } else
-  {
+  } else {
     // 进来了
-    qDebug() << "22\n";
     quit();
   }
 }
@@ -140,11 +137,8 @@ void SandBox::launchApplication() {
     if (Quitting()) {
       quit();
     } else if (application_) {
-     //qDebug() << "cacasdascacaccacacaca";
       return;
     }
-    //qDebug() << "caicaicai";
-    //qDebug() << QThread::currentThreadId();
 
     // 设置屏幕比例
     setupScreenScale();

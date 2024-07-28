@@ -58,11 +58,14 @@ void Application::run() {
   // 创建微型数据库, 方便快速启动
   // ....
 
-  // map 中 新建一个 首要窗口
+  // map 中 新建一个 首要窗口 空账户
+  // 所有权仍在 primary_window_ 上, 其他都只是原始指针的引用
   primary_windows_.emplace(nullptr, std::make_unique<Window::Controller>());
   // 获取指向 Controller 的原始指针, 将其设置为 最新激活的窗口
   setLastActiveWindow((*primary_windows_.begin()).second.get());
 
+  // 上一个函数 为 last_active_window_ 设置了 emplace 中创建的值
+  // 这里的 last_active_window_ 与 last_active_primary_window_ 是相同的
   window_in_settings_ = last_active_primary_window_ = last_active_window_;
 
   QCoreApplication::instance()->installEventFilter(this);

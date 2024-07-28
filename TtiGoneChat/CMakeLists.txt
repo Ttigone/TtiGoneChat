@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+﻿cmake_minimum_required(VERSION 3.5)
 
 project(TtiGoneChat VERSION 0.1 LANGUAGES CXX)
 
@@ -15,6 +15,11 @@ set(PROJECT_SOURCES
 
     src/ui/chat/message_bubble.h src/ui/chat/message_bubble.cpp
     src/ui/widgets/fields/auto_complete_input_field.h src/ui/widgets/fields/auto_complete_input_field.cpp
+    src/ui/widgets/mb_window.h src/ui/widgets/mb_window.cpp
+    src/ui/widgets/windowbar.h src/ui/widgets/windowbar.cpp
+    src/ui/widgets/windowbar_p.h 
+    src/ui/widgets/button.h src/ui/widgets/button.cpp
+    src/ui/widgets/button_p.h 
 
     src/local/account.h src/local/account.cpp
     src/local/domain.h src/local/domain.cpp
@@ -34,6 +39,7 @@ set(PROJECT_SOURCES
     src/main.cpp
     #src/app.h src/app.cpp
     src/stdafx.h
+    src/config.h src/config.cpp
     src/main_window.h src/main_window.cpp
     src/main_widget.h src/main_widget.cpp
 
@@ -41,7 +47,6 @@ set(PROJECT_SOURCES
 
 
     src/storage/local_storage.h src/storage/local_storage.cpp
-    src/storage/connection_pool.h src/storage/connection_pool.cpp
 
     src/data/data_talk.h  src/data/data_talk.cpp
     src/data/data_talk_id.h  src/data/data_talk_id.cpp
@@ -58,6 +63,9 @@ set(PROJECT_SOURCES
     src/media/view/open_common.h
 )
 
+# 仅拷贝
+configure_file(src/window/window_config.json window_config.json  COPYONLY)
+
 
 get_filename_component(src_loc src REALPATH)
 get_filename_component(res_loc res REALPATH)
@@ -72,7 +80,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 qt_add_executable(TtiGoneChat
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        res/TtigoneChat.qrc
+        res/qrc/TtigoneChat.qrc
 
         # lib_base/base/basic_types.h
     )
@@ -117,7 +125,9 @@ target_link_libraries(TtiGoneChat
     # qt-material
     # desktop-app::external_qt-material
     external_qt-material
-    external_qwindowkit-main
+    QWindowKit::Widgets
+    #QWidge
+    #external_qwindowkit-main
 )
 
 

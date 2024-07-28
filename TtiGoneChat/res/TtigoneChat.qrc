@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>day-custom.qss</file>
-    </qresource>
-</RCC>

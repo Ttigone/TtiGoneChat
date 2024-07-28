@@ -1,7 +1,7 @@
-#include "core/launcher.h"
+ï»¿#include "core/launcher.h"
 
 int main(int argc, char *argv[]) {
-  // µ¥Àý¹¹Ôì
+  // å•ä¾‹æž„é€ 
   const auto launcher = Core::Launcher::Create(argc, argv);
   return launcher ? launcher->exec() : 1;
 }

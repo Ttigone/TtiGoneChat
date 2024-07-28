@@ -13,7 +13,7 @@ namespace Settings {
 /// </summary>
 struct AbstractSectionFactory {
   //[[nodiscard]] 
-  [[nodiscard]] virtual QPointer<AbstractSection> create(QWidget *parent, ) const = 0;
+  [[nodiscard]] virtual QPointer<AbstractSection> create(QWidget *parent) const = 0;
 
   virtual ~AbstractSectionFactory() = default;
 };

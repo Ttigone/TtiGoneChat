@@ -1,15 +1,16 @@
-﻿#include "mainwindow.h"
-
+﻿
+#include "window/mainwindow.h"
 #include "window/session_controller.h"
+#include "window/controller.h"
+
+#include "core/application.h"
+#include "core/tray.h"
+
+#include "main_widget.h"
+
 
 #include <QGuiApplication>
 #include <QScreen>
-#include <windows.h>
-
-#include "controller.h"
-#include "main_widget.h"
-#include "core/application.h"
-#include "core/tray.h"
 
 namespace Window 
 {
@@ -17,7 +18,6 @@ namespace Window
 MainWindow::MainWindow(Window::Controller* controller)
 	: controller_(controller)
 {
-
 }
 
 MainWindow::~MainWindow()
@@ -115,21 +115,26 @@ void MainWindow::clearPasscodeLock()
 {
 }
 
+// 自身去 show, 但是为什么还要存储一个  controller(包含一个 ::MainWindow) ?
 void MainWindow::firstShow()
 {
+  //QWidget* t = new QWidget;
   // 更新最小面积
-  updateMiniSize();
-  if (initGeometryFromSystem())
-  {
-    show();
-    return;
-  }
-  // 计算初始值的位置
-  const auto geometry = countInitialGeometry(initialPosition());
+  //updateMiniSize();
+  //if (initGeometryFromSystem())
+  //{
+  //  show();
+  //  return;
+  //}
 
-	setGeometry(geometry);
+
+  // 计算初始值的位置
+  //const auto geometry = countInitialGeometry(initialPosition());
+
+	//setGeometry(geometry);
   //qDebug() << geometry;
   show();
+        //t->show();
 }
 
 bool MainWindow::minimizeToTray() {

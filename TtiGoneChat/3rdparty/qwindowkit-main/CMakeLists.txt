@@ -5,7 +5,7 @@ project(QWindowKit VERSION 1.0.1.0 LANGUAGES CXX)
 # ----------------------------------
 # Build Options
 # ----------------------------------
-option(QWINDOWKIT_BUILD_STATIC "Build static libraries" OFF)
+option(QWINDOWKIT_BUILD_STATIC "Build static libraries" ON)
 option(QWINDOWKIT_BUILD_WIDGETS "Build widgets module" ON)
 option(QWINDOWKIT_BUILD_QUICK "Build quick module" OFF)
 option(QWINDOWKIT_BUILD_EXAMPLES "Build examples" OFF)
