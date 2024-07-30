@@ -1,10 +1,13 @@
 ﻿#include "core/application.h"
+
 #include "core/sandbox.h"
 #include "core/settings.h"
 #include "core/tray.h"
 
 #include "storage/local_storage.h"
+
 #include "ui/style/style_font.h"
+#include "ui/set_style.h"
 
 #include "local/session.h"
 #include "local/account.h"
@@ -12,11 +15,16 @@
 
 #include "lang/lang_translator.h"
 
-
 #include "window/controller.h"
 #include "window/launcher.h"
+#include "window/themes/window_theme.h"
 
 #include <iostream>
+#include <QDir>
+
+#include "base/debug_log.h"
+
+#include "ui/widgets/mb_window.h"
 
 namespace Core {
 
@@ -41,6 +49,7 @@ void Application::run() {
   // 开启本地存储服务
   startLocalStorage();
 
+
   // 设置字体
   style::SetCustomFont(settings().customFontFamily());
   style::internal::StartFonts();
@@ -52,8 +61,6 @@ void Application::run() {
 
   // 开启快捷方法
   startShortcuts();
-
-  std::cout << "starting\n";
 
   // 创建微型数据库, 方便快速启动
   // ....
@@ -72,17 +79,25 @@ void Application::run() {
 
   appDeactivatedValue();
 
-  std::cout << "created\n";
+  LOG_DEBUG() << "正在创建";
 
   // 开启领域
   startDomain();
 
+  // Ui::MbWindow *m = new Ui::MbWindow();
+  // m->setStyleSheet(QString::fromUtf8(Window::Theme::readThemeContent("F:/MyProject/TtiGoneChat/TtiGoneChat/res/themes/dark-style.qss")));
+  // m->show();
   // 首次展示
   last_active_primary_window_->firstShow();
 
   startMediaView();
+  LOG_DEBUG() << "渲染窗口";
 
-  std::cout << "showing.";
+  Ui::SetStyle(last_active_primary_window_->widget(),
+               Window::Theme::readThemeContent(":/qss/themes/dark-style.qss"));
+
+
+  LOG_DEBUG() << "显示窗口";
 
   // 完成第一次展示
   last_active_primary_window_->finishFirstShow();

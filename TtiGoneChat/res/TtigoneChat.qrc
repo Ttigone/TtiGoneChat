@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>ui/icons/sys/close.svg</file>
+        <file>ui/icons/sys/fullscreen.svg</file>
+        <file>ui/icons/sys/maximize.svg</file>
+        <file>ui/icons/sys/minimize.svg</file>
+        <file>ui/icons/sys/more-line.svg</file>
+        <file>ui/icons/sys/restore.svg</file>
+        <file>ui/icons/sys/app_icon.png</file>
+    </qresource>
+    <qresource prefix="/qss">
+        <file>themes/dark-style.qss</file>
+        <file>themes/day-style.qss</file>
+    </qresource>
+</RCC>

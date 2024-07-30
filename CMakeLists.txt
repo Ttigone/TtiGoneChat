@@ -27,5 +27,5 @@ set(desktop_app_skip_libs
     variant
 )
 
-add_subdirectory(TtiGoneChat)
 add_subdirectory(cmake)
+add_subdirectory(TtiGoneChat)

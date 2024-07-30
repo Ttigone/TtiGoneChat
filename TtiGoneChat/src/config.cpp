@@ -1,5 +1,7 @@
 ﻿#include "config.h"
 
+#include "base/debug_log.h"
+
 
 namespace Cfg {
 
@@ -13,7 +15,7 @@ int windowBigDefaultHeight;
 void LoadConfig(const QString& filePath) {
   QFile file(filePath);
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    qWarning() << "读取失败";
+    LOG_DEBUG() << "文件不存在";
     return;
   }
   // QByteArray fileData = file.readAll();
@@ -26,7 +28,7 @@ void LoadConfig(const QString& filePath) {
   qint64 size = file.size();
   uchar* data = file.map(0, size);
   if (!data) {
-    qWarning() << "文件映射失败";
+    LOG_DEBUG() << "配置文件映射失败";
     return;
   }
   QJsonDocument jsonDoc = QJsonDocument::fromJson(
@@ -34,7 +36,7 @@ void LoadConfig(const QString& filePath) {
   file.unmap(data);  // 解除文件映射
 
   if (jsonDoc.isNull() || !jsonDoc.isObject()) {
-    qWarning() << "无效的 JSON 配置文件:" << filePath;
+    LOG_DEBUG() << "无效的 JSON 配置文件:" << "filePath";
     return;
   }
 

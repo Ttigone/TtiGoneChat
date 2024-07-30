@@ -1,19 +1,22 @@
-#include "launcher.h"
-#include "sandbox.h"
+#include "core/launcher.h"
 
+#include "core/sandbox.h"
+#include "base/debug_log.h"
 
-#include <QLoggingCategory>
 #include <QStandardPaths>
 #include <QDir>
 #include <QApplication>
 #include <QString>
 
+#define _DEBUG
 
 namespace Core {
 
 namespace {
 
 uint64 InstallationTag = 0;
+
+using lLevel = QsLogging::Level;
 
 ///
 /// @brief The FilteredCommandLineArguments class
@@ -95,11 +98,14 @@ Launcher::~Launcher()
 
 std::unique_ptr<Launcher> Launcher::Create(int argc, char *argv[]) {
   return std::make_unique<Launcher>(argc, argv);
-  //return std::unique_ptr<Launcher>(new Launcher(argc, argv));
 }
 
 int Launcher::exec() {
   init();
+
+  // 开始日志
+  //initLogger();
+
   initHighDpi();
 
   // 执行程序
@@ -124,6 +130,7 @@ bool Launcher::customWorkingDir() const {
 
 uint64 Launcher::installationTag() const { return InstallationTag; }
 
+
 bool Launcher::checkPortableVersionFolder() { return true; }
 
 bool Launcher::validateCustomWorkingDir() { return true; }
@@ -136,7 +143,32 @@ void Launcher::writeInstallBetaVersionsSetting() {}
 
 void Launcher::prepareSettings() {}
 
-void Launcher::initQtMessageLogging() {}
+void Launcher::initQtMessageLogging() {
+#ifdef _DEBUG
+  QString logDir = initial_working_dir_ + "/logs";
+  // 创建日志目录
+  QDir().mkpath(logDir);
+  // 日志文件路径
+  QString logFilePath = logDir + "/app.log";
+  if (QFile(logFilePath).exists()) {
+		QFile(logFilePath).remove();
+	}
+  base::Logs::Instance().setLoggingLevel(QsLogging::DebugLevel);
+  base::Logs::Instance().setDestIsFile(logFilePath, 512, 2);
+	LOG_DEBUG() << "日志系统初始化启动";
+#else
+  QString appDir = QCoreApplication::applicationDirPath();
+  QString logDir = appDir + "/logs";
+  // 创建日志目录
+  QDir().mkpath(logDir);
+  // 日志文件路径
+  QString logFilePath = logDir + "/app.log";
+
+  base::Logs::Instance().setLoggingLevel(QsLogging::FatalLevel);
+  base::Logs::Instance().setDestIsFile(logFilePath, 512, 2);
+	QLOG_DEBUG() << "日志系统初始化成功";
+#endif
+}
 
 void Launcher::processArguments() {}
 

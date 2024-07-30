@@ -80,8 +80,8 @@ bool SandBox::notify(QObject *receiver, QEvent *e) {
 	  
   }
   //qint64 endTime = QDateTime::currentMSecsSinceEpoch();
-  //qDebug() << "Event processing time for" << e->type() << ":"
-  //         << (endTime - startTime) << "ms";
+  qDebug() << "Event processing time for" << e->type() << ":\n";
+          // << (endTime - startTime) << "ms";
   return notifyOrInvoke(receiver, e);
 }
 
@@ -100,7 +100,7 @@ SandBox::~SandBox() = default;
 bool SandBox::event(QEvent *e) {
     //qDebug() << "TTTT";
 
-  //qDebug() << "Event Type: " << e->type();
+  qDebug() << "Event Type: " << e->type();
   if (e->type() == QEvent::Quit) {
     // return QCoreApplication::event(e);
     if (Quitting())

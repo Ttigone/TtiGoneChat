@@ -9,13 +9,13 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <QAbstractButton>
+#include <QPushButton>
 
 namespace Ui {
 
 class ButtonPrivate;
 
-class Button : public QAbstractButton {
+class Button : public QPushButton {
   Q_OBJECT
   Q_DECLARE_PRIVATE(Button)
   Q_PROPERTY(QIcon iconNormal READ iconNormal WRITE setIconNormal FINAL)
@@ -42,10 +42,10 @@ class Button : public QAbstractButton {
  protected:
   void checkStateSet() override;
   void mouseDoubleClickEvent(QMouseEvent *event) override;
-  void paintEvent(QPaintEvent* event) override;
-  void mouseMoveEvent(QMouseEvent* event) override;
-  void mousePressEvent(QMouseEvent* event) override;
-  void mouseReleaseEvent(QMouseEvent* event) override;
+  // void paintEvent(QPaintEvent* event) override;
+  // void mouseMoveEvent(QMouseEvent* event) override;
+  // void mousePressEvent(QMouseEvent* event) override;
+  // void mouseReleaseEvent(QMouseEvent* event) override;
 
  protected:
   Button(ButtonPrivate &d, QWidget *parent = nullptr);

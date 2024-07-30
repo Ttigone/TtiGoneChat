@@ -4,6 +4,12 @@
 #include "core/base_intergration.h"
 #include <mutex>
 
+namespace base
+{
+class Logs;
+} // namespace
+
+
 namespace Core {
 
 extern const char kOptionFractionalScalingEnabled[];

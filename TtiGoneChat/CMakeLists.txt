@@ -20,6 +20,8 @@ set(PROJECT_SOURCES
     src/ui/widgets/windowbar_p.h 
     src/ui/widgets/button.h src/ui/widgets/button.cpp
     src/ui/widgets/button_p.h 
+    src/ui/set_style.h src/ui/set_style.cpp
+    src/ui/controls/conner_button.h src/ui/controls/conner_button.cpp
 
     src/local/account.h src/local/account.cpp
     src/local/domain.h src/local/domain.cpp
@@ -35,6 +37,9 @@ set(PROJECT_SOURCES
     src/window/controller.h src/window/controller.cpp
     src/window/mainwindow.h src/window/mainwindow.cpp
     src/window/session_controller.h src/window/session_controller.cpp
+    src/window/sidebar.h src/window/sidebar.cpp
+
+    src/window/themes/window_theme.h src/window/themes/window_theme.cpp
 
     src/main.cpp
     #src/app.h src/app.cpp
@@ -51,6 +56,7 @@ set(PROJECT_SOURCES
     src/data/data_talk.h  src/data/data_talk.cpp
     src/data/data_talk_id.h  src/data/data_talk_id.cpp
     src/data/data_msg_id.h  src/data/data_msg_id.cpp
+    src/data/data_history_message.h  src/data/data_history_message.cpp
 
     src/settings/settings_type.h
     src/settings/common.h src/settings/common.cpp
@@ -61,6 +67,7 @@ set(PROJECT_SOURCES
     src/proto/instance.h src/proto/instance.cpp
 
     src/media/view/open_common.h
+    src/media/view/overlay_widget.h src/media/view/overlay_widget.cpp
 )
 
 # 仅拷贝
@@ -70,9 +77,6 @@ configure_file(src/window/window_config.json window_config.json  COPYONLY)
 get_filename_component(src_loc src REALPATH)
 get_filename_component(res_loc res REALPATH)
 
-set(src_qrc
-    res/qrc/telegram.qrc
-)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 
@@ -80,7 +84,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 qt_add_executable(TtiGoneChat
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        res/qrc/TtigoneChat.qrc
+        res/TtigoneChat.qrc
 
         # lib_base/base/basic_types.h
     )
@@ -126,7 +130,7 @@ target_link_libraries(TtiGoneChat
     # desktop-app::external_qt-material
     external_qt-material
     QWindowKit::Widgets
-    #QWidge
+    QsLog
     #external_qwindowkit-main
 )
 

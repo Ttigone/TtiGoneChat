@@ -76,25 +76,25 @@ void Button::mouseDoubleClickEvent(QMouseEvent* event) {
   QAbstractButton::mouseDoubleClickEvent(event);
 }
 
-void Button::paintEvent(QPaintEvent* event) { QPainter painter(this); }
+// void Button::paintEvent(QPaintEvent* event) { QPainter painter(this); }
 
-void Button::mouseMoveEvent(QMouseEvent* event)
-{
-	QAbstractButton::mouseMoveEvent(event);
-}
+// void Button::mouseMoveEvent(QMouseEvent* event)
+// {
+// 	QAbstractButton::mouseMoveEvent(event);
+// }
 
-void Button::mousePressEvent(QMouseEvent* event)
-{
-	QAbstractButton::mousePressEvent(event);
-}
+// void Button::mousePressEvent(QMouseEvent* event)
+// {
+// 	QAbstractButton::mousePressEvent(event);
+// }
 
-void Button::mouseReleaseEvent(QMouseEvent* event)
-{
-	QAbstractButton::mouseReleaseEvent(event);
-}
+// void Button::mouseReleaseEvent(QMouseEvent* event)
+// {
+// 	QAbstractButton::mouseReleaseEvent(event);
+// }
 
 Button::Button(ButtonPrivate& d, QWidget* parent)
-    : QAbstractButton(parent), d_ptr(&d) {
+    : QPushButton(parent), d_ptr(&d) {
   d.q_ptr = this;
   d.init();
 }

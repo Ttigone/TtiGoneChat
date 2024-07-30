@@ -8,7 +8,7 @@ void start();
 
 void LoadConfigFile();
 
-void InitaLoadTheme();
+void InitialLoadTheme();
 
 void writeSettings();
 

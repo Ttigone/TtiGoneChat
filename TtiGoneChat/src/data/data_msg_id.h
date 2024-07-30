@@ -14,8 +14,8 @@ class TalkId;
 /// </summary>
 class MsgId {
  public:
-	constexpr MsgId() noexcept = default;
-  constexpr MsgId(int64 value) noexcept : value_(value) {}
+  MsgId() noexcept = default;
+  MsgId(int64 value) noexcept : value_(value) {}
 
 	[[nodiscard]] constexpr explicit operator bool() const noexcept {
     return (value_ != 0);
@@ -29,8 +29,8 @@ class MsgId {
 
 struct FullMsgId
 {
-  constexpr FullMsgId() noexcept = default;
-  constexpr FullMsgId(Data::TalkId talk, MsgId msg) noexcept : talk_(talk), msg_(msg) {}
+  FullMsgId() noexcept = default;
+  FullMsgId(Data::TalkId talk, MsgId msg) noexcept : talk_(talk), msg_(msg) {}
 
 	//Data::TalkData talk_;
 	Data::TalkId talk_;

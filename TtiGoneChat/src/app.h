@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+
 namespace Window {
 
 class Launcher;

@@ -1,4 +1,4 @@
-﻿#ifndef OPEN_COMMON_H
+﻿	#ifndef OPEN_COMMON_H
 #define OPEN_COMMON_H
 
 #include "data/data_msg_id.h"
@@ -16,7 +16,9 @@ class SessionController;
 /// <summary>
 /// 提出请求(窗口展示...)
 /// </summary>
-namespace Media::View {
+namespace Media {
+
+namespace View {
 
 class NeedRequest {
  public:
@@ -44,6 +46,9 @@ class NeedRequest {
   int64 start_time_ = 0;
 };
 
-}  // namespace Media::View
+}  // namespace View
+
+}  // namespace Media
 
 #endif  // OPEN_COMMON_H
+

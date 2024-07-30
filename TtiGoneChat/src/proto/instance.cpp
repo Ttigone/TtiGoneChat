@@ -1,7 +1,6 @@
-#include "instance.h"
 
-#include "proto/sender.h"
 #include "proto/instance.h"
+#include "proto/sender.h"
 #include "config.h"
 
 namespace Proto {
@@ -52,11 +51,10 @@ Instance::Instance(Mode mode, Fields&& fields)
   d_private_->start();
 }
 
-Instance::Instance(const Instance& other) {}
 
-Instance::~Instance()
-{
-}
+// Instance::Instance(const Instance& other) : QObject(), d_private_(std::make_unique<InstancePrivate>(*other.d_private_)) {}
+
+Instance::~Instance() = default;
 
 const ConfigFields& Instance::configValues() const {
   return d_private_->configValues();

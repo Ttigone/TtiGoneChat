@@ -69,8 +69,7 @@ class MainWindow : public Ui::MbWindow {
                                            QSize min_size) const;
 
  protected:
-	void leaveEvent(QEvent* event) override;
-
+  void leaveEvent(QEvent* event) override;
   void savePosition(Qt::WindowState state = Qt::WindowActive);
   void handleStateChanged(Qt::WindowState state);
   void handleActiveChanged();

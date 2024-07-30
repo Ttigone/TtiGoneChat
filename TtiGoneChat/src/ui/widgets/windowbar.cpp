@@ -7,11 +7,12 @@
 #include <QLocale>
 #include <QEvent>
 
-#include "main_window.h"
 
 namespace Ui {
 
-WindowBarPrivate::WindowBarPrivate() = default;
+WindowBarPrivate::WindowBarPrivate() {
+};
+
 WindowBarPrivate::~WindowBarPrivate() = default;
 
 void WindowBarPrivate::init() {

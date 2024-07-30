@@ -1,7 +1,19 @@
 ﻿#include "storage/local_storage.h"
 
 #include "config.h"
+#include "base/debug_log.h"
+#include "core/application.h"
+#include "window/controller.h"
 
+#include "window/themes/window_theme.h"
+
+namespace Window
+{
+	namespace Theme
+	{
+		
+	}
+}
 
 
 namespace Storage
@@ -9,8 +21,9 @@ namespace Storage
 
 void start()
 {
+  LOG_DEBUG() << "读取设置";
   LoadConfigFile();
-	InitaLoadTheme();
+	InitialLoadTheme();
 	readLangPack();
 }
 
@@ -18,14 +31,21 @@ void start()
 
 void LoadConfigFile()
 {
+  LOG_DEBUG() << "加载配置中";
 	Cfg::LoadConfig("window_config.json");
-  qDebug() << Cfg::windowMinWidth;
 }
 
 /// @brief 加载主题
-void InitaLoadTheme()
-{
-	
+void InitialLoadTheme() {
+  LOG_DEBUG() << "加载主题中";
+
+  // QFile qss(QStringLiteral(":/resources/theme/Login/dark-style.qss"));
+  // if (qss.open(QIODevice::ReadOnly | QIODevice::Text)) {
+  //   //setStyleSheet(QString::fromUtf8(qss.readAll()));
+  //   qss.close();
+  // }
+  //Core::App().activeWindow()->widget()->setStyleSheet(
+  //    Window::Theme::readThemeContent(":/icon/day-custom.qss"));
 }
 
 /// @brief 读写设置项
