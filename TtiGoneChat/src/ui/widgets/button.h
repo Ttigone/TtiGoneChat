@@ -6,8 +6,8 @@
  * \date   July 2024
  *********************************************************************/
 
-#ifndef BUTTON_H
-#define BUTTON_H
+#ifndef UI_WIDGET_BUTTON_H
+#define UI_WIDGET_BUTTON_H
 
 #include <QPushButton>
 
@@ -55,4 +55,4 @@ class Button : public QPushButton {
 
 } // namespace Ui
 
-#endif // BUTTON_H
+#endif // UI_WIDGET_BUTTON_H

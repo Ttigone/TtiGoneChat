@@ -3,6 +3,9 @@
 #include "QWKWidgets/widgetwindowagent.h"
 #include "ui/widgets/windowbar.h"
 #include "ui/widgets/button.h"
+#include "layout/vertical_layout.h"
+
+#include "ui/controls/conner_button.h"
 
 #include "config.h"
 
@@ -10,6 +13,8 @@
 #include <QMenuBar>
 #include <QTimer>
 #include <QVBoxLayout>
+
+//#include 
 
 namespace Ui {
 
@@ -51,35 +56,42 @@ static inline void emulateLeaveEvent(QWidget* widget) {
   });
 }
 
-MbWindow::MbWindow(QWidget* parent) : QWidget(parent) {
-  // this->setStyleSheet("QWidget { background-color: white; }");
+MbWindow::MbWindow(QWidget* parent)
+    : QWidget(parent),
+      layout_(new QVBoxLayout(this)),
+      central_widget(new QWidget),
+      central_widget_layout_(new Layout::VerticalLayout(central_widget)) {
+      //central_widget_layout_(new QVBoxLayout(central_widget)) {
 
-
-  // layout_ = new QVBoxLayout(this);
+  //central_widget->setLayout(central_widget_layout_);
+  //central_widget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
   setMinimumSize(Cfg::windowMinWidth, Cfg::windowMinHeight);
   installWindowAgent();
   layout_->setContentsMargins(QMargins());
   layout_->setSpacing(0);
   this->setLayout(layout_);
   agent_->centralize();
-
+  //qDebug() << agent_->titleBar()->geometry();
+  //qDebug() << this->geometry();
 }
 
 MbWindow::~MbWindow() = default;
 
-void MbWindow::setTitle(const QString& title)
-{
+void MbWindow::setContentWidget(QWidget* w) {
+	central_widget_layout_->addWidget(w);
 }
 
-void MbWindow::setMinimumSize(int w, int h)
-{ QWidget::setMinimumSize(QSize(w, h)); }
+void MbWindow::setTitle(const QString& title) {}
 
+void MbWindow::setMinimumSize(int w, int h) {
+  QWidget::setMinimumSize(QSize(w, h));
+}
 
-void MbWindow::setMinimumSize(QSize size)
-{ QWidget::setMinimumSize(size); }
+void MbWindow::setMinimumSize(QSize size) { QWidget::setMinimumSize(size); }
 
 void MbWindow::installWindowAgent() {
-  layout_ = new QVBoxLayout();
+  //layout_ = new QVBoxLayout();
+  //layout_ = new Layout::VerticalLayout(this);
   agent_ = new QWK::WidgetWindowAgent(this);
   agent_->setup(this);
 
@@ -87,17 +99,16 @@ void MbWindow::installWindowAgent() {
     Q_UNUSED(this)
     auto menuBar = new QMenuBar();
 
-        // auto file = new QMenu(tr("File(&F)"), menuBar);
-        // file->addAction(new QAction(tr("New(&N)"), menuBar));
-        // file->addSeparator();
+    // auto file = new QMenu(tr("File(&F)"), menuBar);
+    // file->addAction(new QAction(tr("New(&N)"), menuBar));
+    // file->addSeparator();
 
-        // auto edit = new QMenu(tr("Edit(&E)"), menuBar);
-        // edit->addAction(new QAction(tr("Undo(&U)"), menuBar));
-        // edit->addAction(new QAction(tr("Redo(&R)"), menuBar));
+    // auto edit = new QMenu(tr("Edit(&E)"), menuBar);
+    // edit->addAction(new QAction(tr("Undo(&U)"), menuBar));
+    // edit->addAction(new QAction(tr("Redo(&R)"), menuBar));
 
-
-        // menuBar->addMenu(file);
-        // menuBar->addMenu(edit);
+    // menuBar->addMenu(file);
+    // menuBar->addMenu(edit);
 
     return menuBar;
   }();
@@ -110,14 +121,12 @@ void MbWindow::installWindowAgent() {
   auto iconBtn = new Button();
   // auto iconBtn = new QPushButton();
   iconBtn->setObjectName(QStringLiteral("icon-button"));
-  // iconBtn->setMinimumSize(40, 30);
   iconBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
   auto minBtn = new Button();
   // auto minBtn = new QPushButton();
   minBtn->setObjectName(QStringLiteral("min-button"));
   minBtn->setProperty("system-button", true);
-  // minBtn->setMinimumSize(40, 30);
   minBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
   auto maxBtn = new Button();
@@ -125,23 +134,15 @@ void MbWindow::installWindowAgent() {
   maxBtn->setCheckable(true);
   maxBtn->setObjectName(QStringLiteral("max-button"));
   maxBtn->setProperty("system-button", true);
-  // maxBtn->setIcon(QIcon("F:/MyProject/TtiGoneChat/TtiGoneChat/res/ui/icons/sys/_full_screen.svg"));
-  // qDebug() << maxBtn->icon();
-  // maxBtn->setStyleSheet("background-color:yellow");
-  // maxBtn->setMinimumSize(40, 30);
   maxBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
   auto closeBtn = new Button();
   // auto closeBtn = new QPushButton();
   closeBtn->setObjectName(QStringLiteral("close-button"));
-  // closeBtn->setIcon(QIcon());
-  // closeBtn->setMinimumSize(40, 30);
   closeBtn->setProperty("system-button", true);
-  // qDebug() << closeBtn->icon();
   closeBtn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
   auto windowbar = new WindowBar();
-  qDebug() << windowbar->frameRect();
 
   windowbar->setIconButton(iconBtn);
   windowbar->setMinButton(minBtn);
@@ -163,34 +164,35 @@ void MbWindow::installWindowAgent() {
 
   layout_->setMenuBar(windowbar);
 
-  // QWidget* w = new QWidget();
-  // w->setMinimumHeight(200);
-  // // w->setStyleSheet("background-color:yellow");
 
-  // // w->setProperty("TitleBar", true);
 
-  // QVBoxLayout* t = new QVBoxLayout(w);
-  // t->setContentsMargins(QMargins());
-  // t->setSpacing(0);
-  // t->setMenuBar(windowbar);
+  //QWidget *wt = new QWidget(central_widget);
+  //QWidget *wt = new QWidget();
+  //////// 一定要设置高度, 因为 layout 会自动调整 widget 的高度 默认 0
+  //wt->setMinimumHeight(30);
+  //wt->setStyleSheet(
+  //    "background-color: Coral; border: 1px solid #000000;");
 
-  // // 有问题
-  // //layout_->addLayout(t);
-  // layout_->addWidget(w);
-  QWidget *wt = new QWidget();
-  wt->setStyleSheet("background-color: #F3F3F3");
-  layout_->addWidget(wt);
+  //setContentWidget(wt);
+
+
+	//ConnerButton *n = new ConnerButton();
+ // layout_->addWidget(n);
+
+  layout_->addWidget(central_widget);
+
 
   connect(iconBtn, &QAbstractButton::clicked, agent_, [this, iconBtn] {
-      iconBtn->setProperty("double-click-close", false);
+    iconBtn->setProperty("double-click-close", false);
 
-      // WindowBar's icon show a menu to choose
-      QTimer::singleShot(75, agent_, [this, iconBtn]() {
-          if (iconBtn->property("double-click-close").toBool()) {
-              return;
-          }
-          agent_->showSystemMenu(iconBtn->mapToGlobal(QPoint(0, iconBtn->height())));
-      });
+    // WindowBar's icon show a menu to choose
+    QTimer::singleShot(75, agent_, [this, iconBtn]() {
+      if (iconBtn->property("double-click-close").toBool()) {
+        return;
+      }
+      agent_->showSystemMenu(
+          iconBtn->mapToGlobal(QPoint(0, iconBtn->height())));
+    });
   });
 
   // connect(iconBtn, &Button::doubleClicked, this, [iconBtn, this]() {
@@ -214,8 +216,17 @@ void MbWindow::installWindowAgent() {
             // slove hover event
             emulateLeaveEvent(maxBtn);
           });
-  connect(windowbar, &WindowBar::closeRequested, this,
-          &QWidget::close);
+  connect(windowbar, &WindowBar::closeRequested, this, &QWidget::close);
 }
 
+bool MbWindow::checkLayout(const QString &widget_name) {
+  for (int i = 0; i < layout_->count(); ++i) {
+    QLayoutItem* item = layout_->itemAt(i);
+    auto w = item->widget();
+    if (w && w->objectName() == widget_name) {
+      return true;
+    }
+  }
+  return false;
+}
 }  // namespace Ui

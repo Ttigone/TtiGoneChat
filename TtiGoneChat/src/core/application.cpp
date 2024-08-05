@@ -23,6 +23,7 @@
 #include <QDir>
 
 #include "base/debug_log.h"
+#include "media/view/overlay_widget.h"
 
 #include "ui/widgets/mb_window.h"
 
@@ -43,7 +44,17 @@ struct Application::Private {
 
 Application::Application() : QObject(), private_(std::make_unique<Private>()) {}
 
-Application::~Application() { instance_ = nullptr; }
+Application::~Application()
+{
+  setLastActiveWindow(nullptr);
+  window_in_settings_ = last_active_primary_window_ = nullptr;
+  closing_async_windows_.clear();
+  primary_windows_.clear();
+  media_view_ = nullptr;
+
+
+	instance_ = nullptr;
+}
 
 void Application::run() {
   // 开启本地存储服务
@@ -88,14 +99,16 @@ void Application::run() {
   // m->setStyleSheet(QString::fromUtf8(Window::Theme::readThemeContent("F:/MyProject/TtiGoneChat/TtiGoneChat/res/themes/dark-style.qss")));
   // m->show();
   // 首次展示
-  last_active_primary_window_->firstShow();
 
+  last_active_primary_window_->firstShow();
   startMediaView();
+
   LOG_DEBUG() << "渲染窗口";
 
   Ui::SetStyle(last_active_primary_window_->widget(),
                Window::Theme::readThemeContent(":/qss/themes/dark-style.qss"));
 
+  //qDebug() << last_active_primary_window_->widget()->geometry();
 
   LOG_DEBUG() << "显示窗口";
 
@@ -204,6 +217,25 @@ void Application::startDomain() {}
 void Application::startMediaView() {
   // 获取到 几何形状
   const auto current = last_active_primary_window_->widget()->geometry();
+  qDebug() << current;
+
+  media_view_ = std::make_unique<Media::View::OverlayWidget>();
+  //media_view_ = new Media::View::OverlayWidget();
+  // 获取了 原始指针
+  //qDebug() << media_view_.get()->parentWidget();
+  //media_view_->setMinimumHeight(30);
+
+  // 1
+  //media_view_->setStyleSheet("background-color:Coral");
+
+  //media_view_->setObjectName("TEST");
+
+  //last_active_primary_window_->widget()->setContentWidget(media_view_);
+  //last_active_primary_window_->widget()->setContentWidget(media_view_.get());
+  //QPushButton* button1 = new QPushButton("Button 1");
+  //button1->setStyleSheet("QPushButton { background-color: red; }");
+  //last_active_primary_window_->widget()->setContentWidget(button1);
+  last_active_primary_window_->widget()->setContentWidget(media_view_.release());
 }
 
 void Application::updateWindowTitles() {}

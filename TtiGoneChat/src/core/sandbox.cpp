@@ -100,7 +100,7 @@ SandBox::~SandBox() = default;
 bool SandBox::event(QEvent *e) {
     //qDebug() << "TTTT";
 
-  qDebug() << "Event Type: " << e->type();
+  //qDebug() << "Event Type: " << e->type();
   if (e->type() == QEvent::Quit) {
     // return QCoreApplication::event(e);
     if (Quitting())

@@ -1,6 +1,6 @@
-/*****************************************************************//**
+ï»¿/*****************************************************************//**
  * \file   overlay_widget.h
- * \brief  ÉÏ²ã´°¿Ú(Ö÷½çÃæ)
+ * \brief  ä¸Šå±‚çª—å£(ä¸»ç•Œé¢)
  * 
  * \author C3H3_Ttigone
  * \date   July 2024
@@ -19,12 +19,12 @@ class OverlayWidget final : public QWidget {
   Q_OBJECT
  public:
   explicit OverlayWidget(QWidget *parent = nullptr);
-  virtual ~OverlayWidget();
+  ~OverlayWidget();
 
   //void hide();
 
  private:
-   // Æô¶¯ opengl
+   // å¯åŠ¨ opengl
   bool opengl_ = false;
 
   bool right_detial_visible_ = false;

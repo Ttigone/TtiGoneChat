@@ -17,6 +17,9 @@ target_precompile_headers(lib_ui PRIVATE $<$<COMPILE_LANGUAGE:CXX,OBJCXX>:${src_
 target_sources(lib_ui PRIVATE 
   ui/ui_pch.h
   ui/style/style_font.h ui/style/style_font.cpp
+  ui/widgets/buttons.h  ui/widgets/buttons.cpp
+  ui/abstract_button.h  ui/abstract_button.cpp 
+  ui/style/style_core_types.h
 )
 
 target_include_directories(lib_ui

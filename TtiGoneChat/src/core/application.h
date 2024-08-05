@@ -5,6 +5,8 @@
 #include <set>
 #include <map>
 
+#include "window/controller.h"
+
 
 namespace Window {
 class Controller;
@@ -20,7 +22,11 @@ class Account;
 class Domain;
 } // namespace Local
 
-//using namespace Local;
+namespace Media {
+namespace View {
+class OverlayWidget;
+}  // namespace View
+}  // namespace Media
 
 namespace Core {
 
@@ -205,6 +211,9 @@ class Application final : public QObject {
   Window::Controller *last_active_primary_window_ = nullptr;
   // 处于设置的窗口
   Window::Controller *window_in_settings_ = nullptr;
+
+  std::unique_ptr<Media::View::OverlayWidget> media_view_;
+  //Media::View::OverlayWidget *media_view_;
 
   bool passcodeLock;
   bool screen_locked_ = false;
