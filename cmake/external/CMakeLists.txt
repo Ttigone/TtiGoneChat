@@ -10,3 +10,5 @@ add_checked_subdirectory(qwindowkit-main)
 add_checked_subdirectory(qt)
 add_checked_subdirectory(qt-material)
 add_checked_subdirectory(QsLog)
+
+add_checked_subdirectory(gsl)

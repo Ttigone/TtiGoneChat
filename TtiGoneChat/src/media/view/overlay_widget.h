@@ -11,6 +11,11 @@
 
 #include <QWidget>
 
+namespace Window
+{
+	class SideBar;
+} // namespace Window 
+
 namespace Media {
 
 namespace View
@@ -28,6 +33,8 @@ class OverlayWidget final : public QWidget {
   bool opengl_ = false;
 
   bool right_detial_visible_ = false;
+
+  std::unique_ptr<Window::SideBar> side_bar_;
 
 
 };

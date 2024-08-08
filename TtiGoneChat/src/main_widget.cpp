@@ -4,7 +4,7 @@
 
 #include <QPointer>
 
-MainWidget::MainWidget(QWidget* parent, Window::SessionController* controller)
+MainWidget::MainWidget(QWidget* parent, not_null<Window::SessionController *> controller)
 	: QWidget(parent), controller_(controller) {
 }
 

@@ -7,6 +7,20 @@
         <file>ui/icons/sys/more-line.svg</file>
         <file>ui/icons/sys/restore.svg</file>
         <file>ui/icons/sys/app_icon.png</file>
+        <file>ui/icons/mediaview/attachment-hover.svg</file>
+        <file>ui/icons/mediaview/attachment-normal.svg</file>
+        <file>ui/icons/mediaview/calendar-hover.svg</file>
+        <file>ui/icons/mediaview/calendar-normal.svg</file>
+        <file>ui/icons/mediaview/char-hover.svg</file>
+        <file>ui/icons/mediaview/char-nomal.svg</file>
+        <file>ui/icons/mediaview/mark-hover.svg</file>
+        <file>ui/icons/mediaview/mark-normal.svg</file>
+        <file>ui/icons/mediaview/rating-hover.svg</file>
+        <file>ui/icons/mediaview/rating-normal.svg</file>
+        <file>ui/icons/mediaview/settings-hover.svg</file>
+        <file>ui/icons/mediaview/settings-normal.svg</file>
+        <file>ui/icons/mediaview/task-hover.svg</file>
+        <file>ui/icons/mediaview/task-normal.svg</file>
     </qresource>
     <qresource prefix="/qss">
         <file>themes/dark-style.qss</file>

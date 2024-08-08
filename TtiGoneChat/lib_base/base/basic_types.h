@@ -9,6 +9,10 @@
 #include <string>
 #include <memory>
 #include <functional>
+#include <gsl/gsl>
+
+using gsl::not_null;
+
 
 //using uchar = unsigned char; // Qt has uchar
 using int8 = qint8;

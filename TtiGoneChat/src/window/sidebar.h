@@ -11,13 +11,13 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QVBoxLayout>
 
-//#include "ui/controls/conner_button.h"
-//#include "layout/vertical_layout.h"
 
 namespace Ui
 {
-class ConnerButton;
+class WordsButton;
+class CommonButton;
 } // namespace Ui
 
 namespace Layout
@@ -30,15 +30,26 @@ namespace Window {
 class SideBar : public QWidget {
   Q_OBJECT
  public:
-	SideBar(QWidget *parent = nullptr);
-	~SideBar();
+  SideBar(QWidget *parent = nullptr);
+  ~SideBar();
 
  private:
-	QLabel *label_;
-	Ui::ConnerButton *all_chats_;
-	
-	Layout::VerticalLayout *layout_;
+  void init();
+  QLabel *label_;
 
+
+
+  Ui::WordsButton *all_chats_;
+  // Ui::CommonButton *all_chats_;
+  Ui::WordsButton *work_;
+  Ui::WordsButton *meet_;
+  Ui::WordsButton *calendar_;
+  Ui::WordsButton *rating_;
+  Ui::WordsButton *saved;
+  Ui::WordsButton *settings_;
+
+  Layout::VerticalLayout *layout_;
+  // QVBoxLayout *layout_;
 };
 
 } // namespace Window

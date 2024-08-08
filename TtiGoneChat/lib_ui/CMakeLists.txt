@@ -4,7 +4,6 @@ add_library(desktop-app::lib_ui ALIAS lib_ui)
 get_filename_component(src_loc . REALPATH)
 
 
-
 set_target_properties(lib_ui PROPERTIES AUTOMOC ON)
 
 # 禁用 uic, 避免 ui_pch.h 被识别为 .ui 文件 
@@ -20,6 +19,8 @@ target_sources(lib_ui PRIVATE
   ui/widgets/buttons.h  ui/widgets/buttons.cpp
   ui/abstract_button.h  ui/abstract_button.cpp 
   ui/style/style_core_types.h
+  ui/mb_widget.h ui/mb_widget.cpp
+
 )
 
 target_include_directories(lib_ui

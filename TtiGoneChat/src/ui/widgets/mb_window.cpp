@@ -5,8 +5,6 @@
 #include "ui/widgets/button.h"
 #include "layout/vertical_layout.h"
 
-#include "ui/controls/conner_button.h"
-
 #include "config.h"
 
 #include <QApplication>

@@ -1,5 +1,5 @@
-﻿#ifndef CONFIG_H
-#define CONFIG_H
+﻿#ifndef PROTO_CONFIG_H
+#define PROTO_CONFIG_H
 
 #include <QString>
 
@@ -29,4 +29,4 @@ struct ConfigFields {
 } // namespace PROTO
 
 
-#endif // CONFIG_H
+#endif // PROTO_CONFIG_H

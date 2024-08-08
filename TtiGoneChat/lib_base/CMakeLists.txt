@@ -25,8 +25,10 @@ target_link_libraries(lib_base
 PUBLIC
     external-qt
     QsLog
+    desktop-app::external_gsl
 )
 
-
-
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
+endif()
 

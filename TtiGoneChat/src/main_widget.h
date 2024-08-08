@@ -1,7 +1,6 @@
 ﻿#ifndef MAIN_WIDGET_H
 #define MAIN_WIDGET_H
 
-#include <QWidget>
 
 class MainWindow;
 
@@ -18,7 +17,7 @@ class SessionController;
 class MainWidget final : public QWidget
 {
 public:
-	MainWidget(QWidget* parent, Window::SessionController* controller);
+	MainWidget(QWidget* parent, not_null<Window::SessionController *> controller);
 	~MainWidget();
 
 	[[nodiscard]] Local::Session &session() const;
@@ -49,7 +48,9 @@ private:
 	//void 
 
 	//const Window::SessionController* controller_;
-	Window::SessionController* controller_;
+	//Window::SessionController* controller_;
+	const not_null<Window::SessionController *> controller_;
+	//const not_null<
 
 
 };

@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.5)
+﻿cmake_minimum_required(VERSION 3.15)
 
 project(TtiGoneChat VERSION 0.1 LANGUAGES CXX)
 
@@ -21,9 +21,6 @@ set(PROJECT_SOURCES
     src/ui/widgets/button.h src/ui/widgets/button.cpp
     src/ui/widgets/button_p.h 
     src/ui/set_style.h src/ui/set_style.cpp
-    src/ui/controls/conner_button.h src/ui/controls/conner_button.cpp
-    src/ui/controls/common_button.h src/ui/controls/common_button.cpp
-    src/ui/controls/words_button.h src/ui/controls/words_button.cpp
 
     src/local/account.h src/local/account.cpp
     src/local/domain.h src/local/domain.cpp
@@ -139,6 +136,7 @@ target_link_libraries(TtiGoneChat
     #external_qwindowkit-main
 )
 
+target_precompile_headers(TtiGoneChat PRIVATE $<$<COMPILE_LANGUAGE:CXX,OBJCXX>:${src_loc}/stdafx.h>)
 
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
