@@ -21,6 +21,24 @@ target_sources(lib_ui PRIVATE
   ui/style/style_core_types.h
   ui/mb_widget.h ui/mb_widget.cpp
 
+  ui/widgets/mb_window.h ui/widgets/mb_window.cpp
+
+  ui/platform/platform_window.h ui/platform/platform_window.cpp
+
+  ui/platform/win/win_window.cpp  ui/platform/win/win_window.h
+
+  ui/ui_utility.h ui/ui_utility.cpp  
+  ui/widgets/labels.h  ui/widgets/labels.cpp  
+  ui/click_handler.h  ui/click_handler.cpp
+
+  ui/text/text_entity.h ui/text/text_entity.cpp
+
+  ui/text/text.h ui/text/text.cpp 
+  ui/widgets/popup_menu.h ui/widgets/popup_menu.cpp
+  ui/effects/animation_value.h ui/effects/animation_value.cpp
+
+
+
 )
 
 target_include_directories(lib_ui

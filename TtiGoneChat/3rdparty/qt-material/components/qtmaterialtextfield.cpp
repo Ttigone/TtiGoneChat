@@ -161,7 +161,6 @@ QColor QtMaterialTextField::textColor() const
 
     if (d->useThemeColors || !d->textColor.isValid()) {
         return QtMaterialStyle::instance().themeColor("text");
-        qDebug() << QtMaterialStyle::instance().themeColor("text");
     } else {
         return d->textColor;
     }

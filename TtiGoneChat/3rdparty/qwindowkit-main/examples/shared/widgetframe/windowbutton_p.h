@@ -2,18 +2,18 @@
 // Copyright (C) 2021-2023 wangwenx190 (Yuhang Zhao)
 // SPDX-License-Identifier: Apache-2.0
 
-#ifndef WINDOWBUTTONPRIVATE_H
-#define WINDOWBUTTONPRIVATE_H
+#ifndef WINDOWWindowbarButtonPrivate_H
+#define WINDOWWindowbarButtonPrivate_H
 
 #include "windowbutton.h"
 
 namespace QWK {
 
-    class WindowButtonPrivate {
+    class WindowWindowbarButtonPrivate {
         Q_DECLARE_PUBLIC(WindowButton)
     public:
-        WindowButtonPrivate();
-        virtual ~WindowButtonPrivate();
+        WindowWindowbarButtonPrivate();
+        virtual ~WindowWindowbarButtonPrivate();
 
         void init();
 
@@ -28,4 +28,4 @@ namespace QWK {
 
 }
 
-#endif // WINDOWBUTTONPRIVATE_H
+#endif // WINDOWWindowbarButtonPrivate_H

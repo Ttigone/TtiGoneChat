@@ -9,9 +9,13 @@
 #ifndef SIDEBAR_H
 #define SIDEBAR_H
 
+#include "ui/mb_widget.h"
+
+
 #include <QWidget>
 #include <QLabel>
 #include <QVBoxLayout>
+
 
 
 namespace Ui
@@ -35,9 +39,13 @@ class SideBar : public QWidget {
 
  private:
   void init();
+
+  QVBoxLayout *layout_;
+  //const not_null<Ui::MbWidget *>
+  const not_null<QWidget *> widget_;
+  //Layout::VerticalLayout *side_bar_layout_;
+  QVBoxLayout *side_bar_layout_;
   QLabel *label_;
-
-
 
   Ui::WordsButton *all_chats_;
   // Ui::CommonButton *all_chats_;
@@ -48,7 +56,6 @@ class SideBar : public QWidget {
   Ui::WordsButton *saved;
   Ui::WordsButton *settings_;
 
-  Layout::VerticalLayout *layout_;
   // QVBoxLayout *layout_;
 };
 

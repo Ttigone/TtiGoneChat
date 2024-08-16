@@ -2,7 +2,6 @@
 
 #include <QDateTime>
 
-#include "window/launcher.h"
 #include "base/invoke_queued.h"
 
 #include "core/application.h"

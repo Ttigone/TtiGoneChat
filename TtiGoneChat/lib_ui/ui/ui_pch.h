@@ -14,4 +14,8 @@
 
 #include <QWidget>
 
+#include <any>
+
 #include "base/basic_types.h"
+//#include "base/flags.h"
+#include "ui/style/style_core_types.h"

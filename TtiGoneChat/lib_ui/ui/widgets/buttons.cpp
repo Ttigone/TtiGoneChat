@@ -5,33 +5,34 @@
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include <QMouseEvent>
+#include <QPixmap>
 
 namespace Ui {
 CommonButton::CommonButton(QWidget* parent) : AbstractButton(parent) {
-  //this->setStyleSheet("background-color:Coral");
+  // this->setStyleSheet("background-color:Coral");
 }
 
 CommonButton::CommonButton(const QImage& image, QWidget* parent)
     : AbstractButton(image, parent) {
-  //this->setStyleSheet("background-color:Coral");
+  // this->setStyleSheet("background-color:Coral");
 }
 
 CommonButton::CommonButton(const QString& image_path, QWidget* parent)
     : AbstractButton(image_path, parent) {
-  //this->setStyleSheet("background-color:Coral");
+  // this->setStyleSheet("background-color:Coral");
 }
 
-CommonButton::CommonButton(const QImage& normal_image, const QImage& entry_image, QWidget* parent)
-	: AbstractButton(normal_image, entry_image, parent)
-{
-	//this->setStyleSheet("background-color:Coral");
+CommonButton::CommonButton(const QImage& normal_image,
+                           const QImage& entry_image, QWidget* parent)
+    : AbstractButton(normal_image, entry_image, parent) {
+  // this->setStyleSheet("background-color:Coral");
 }
 
 CommonButton::CommonButton(const QString& normal_image_path,
                            const QString& entry_image_path, QWidget* parent)
     : AbstractButton(normal_image_path, entry_image_path, parent) {
   // this->setStyleSheet("background-color:Coral");
-    // qDebug() << image().at(0) << image().at(1);
+  // qDebug() << image().at(0) << image().at(1);
 }
 
 CommonButton::~CommonButton() {}
@@ -44,16 +45,14 @@ void CommonButton::paintEvent(QPaintEvent* event) {
   painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 
   auto img = isHover() ? getImage().at(1) : getImage().at(0);
-  //if (img.isNull())
-  //{
-  //  qDebug() << "Image is null";
-  //} else
-  //{
-  //  qDebug() << "SADAS";
-  //}
 
-  painter.drawImage(rect, img.scaled(rect.size().toSize(), Qt::KeepAspectRatio,
-                                     Qt::SmoothTransformation));
+  auto test_ = QPixmap::fromImage(img);
+  painter.drawPixmap(rect.toRect(),
+      test_.scaled(rect.size().toSize(), Qt::KeepAspectRatio,
+                   Qt::SmoothTransformation));
+
+  //painter.drawImage(rect, img.scaled(rect.size().toSize(), Qt::KeepAspectRatio,
+  //                                   Qt::SmoothTransformation));
 
   AbstractButton::paintEvent(event);
 }
@@ -84,16 +83,15 @@ ConnerButton::ConnerButton(QWidget* parent) : AbstractButton(parent) {
   // animation_group_->addAnimation(font_animation_);
 }
 
-
-ConnerButton::ConnerButton(const QString &normal_image_path, const QString &entry_image_path,
-                           QWidget* parent)
+ConnerButton::ConnerButton(const QString& normal_image_path,
+                           const QString& entry_image_path, QWidget* parent)
     : ConnerButton(parent) {
   setImage(normal_image_path, entry_image_path);
 }
 
-ConnerButton::ConnerButton(const QImage& normal_image, const QImage& entry_image, QWidget* parent)
-	: ConnerButton(parent)
-{
+ConnerButton::ConnerButton(const QImage& normal_image,
+                           const QImage& entry_image, QWidget* parent)
+    : ConnerButton(parent) {
   setImage(normal_image, entry_image);
 }
 
@@ -147,10 +145,11 @@ void ConnerButton::paintEvent(QPaintEvent* event) {
   // qDebug() << isHover();
   // auto img = isHover() ? image().at(1) : image().at(0);
   auto img = is_hovering_ ? getImage().at(1) : getImage().at(0);
-  // is_hovering_ ? setImage(entry_image_) : setImage(nomal_image_);
-  painter.drawImage(icon_rect_,
-                    img.scaled(icon_rect_.size().toSize(), Qt::KeepAspectRatio,
-                               Qt::SmoothTransformation));
+  auto test_ = QPixmap::fromImage(img);
+  painter.drawPixmap(
+      icon_rect_.toRect(),
+      test_.scaled(icon_rect_.size().toSize(), Qt::KeepAspectRatio,
+                   Qt::SmoothTransformation));
 
   // conner_rect_ = QRectF(rect.width() - icon_Rect_.x() - 18, icon_Rect_.y(),
   // 18, 14); // 留出一点边距，防止图像紧贴边缘
@@ -282,9 +281,7 @@ void ConnerButton::mouseMoveEvent(QMouseEvent* event) {
 }
 
 WordsButton::WordsButton(const QString& text, QWidget* parent)
-    : AbstractButton(parent),
-      bottom_words_(text)
-{
+    : AbstractButton(parent), bottom_words_(text) {
   setFixedSize(40, 50);
   setImageSize(30, 30);
   words_size_ = QSize(40, 10);
@@ -297,7 +294,8 @@ WordsButton::WordsButton(const QImage& image, const QString& text,
   setImage(image);
   if (!is_conner_enable_) {
     if (!getImage().empty()) {
-      cooperate_btn_ = new CommonButton(getImage().at(0), getImage().at(1), this);
+      cooperate_btn_ =
+          new CommonButton(getImage().at(0), getImage().at(1), this);
     }
   }
 }
@@ -308,9 +306,9 @@ WordsButton::WordsButton(const QString& normal_image_path,
     : WordsButton(text, parent) {
   setImage(normal_image_path, entry_image_path);
   if (!is_conner_enable_) {
-    if (!getImage().empty())
-    {
-			cooperate_btn_ = new CommonButton(getImage().at(0), getImage().at(1), this);
+    if (!getImage().empty()) {
+      cooperate_btn_ =
+          new CommonButton(getImage().at(0), getImage().at(1), this);
     }
   }
 }
@@ -325,28 +323,26 @@ QSize WordsButton::imageSize() const { return image_size_; }
 
 void WordsButton::setImageSize(qreal w, qreal h) { image_size_ = QSize(w, h); }
 
-bool WordsButton::isConnerEnable() const
-{ return is_conner_enable_; }
+bool WordsButton::isConnerEnable() const { return is_conner_enable_; }
 
 void WordsButton::setConnerEnable(bool enable) {
   is_conner_enable_ = enable;
   // 启用角标
   if (enable) {
-    //cooperate_btn_ = static_cast<ConnerButton *>(cooperate_btn_);
+    // cooperate_btn_ = static_cast<ConnerButton *>(cooperate_btn_);
     cooperate_btn_->deleteLater();
     cooperate_btn_ = new ConnerButton(getImage().at(0), getImage().at(1), this);
-  } else
-  {
+  } else {
     cooperate_btn_->deleteLater();
     cooperate_btn_ = new CommonButton(getImage().at(0), this);
-    //cooperate_btn_ = static_cast<CommonButton *>(cooperate_btn_);
+    // cooperate_btn_ = static_cast<CommonButton *>(cooperate_btn_);
   }
 }
 
 void WordsButton::paintEvent(QPaintEvent* event) {
-  //if (image().isNull()) {
-  //  return;
-  //}
+  // if (image().isNull()) {
+  //   return;
+  // }
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing, true);
   painter.setRenderHint(QPainter::SmoothPixmapTransform, true);

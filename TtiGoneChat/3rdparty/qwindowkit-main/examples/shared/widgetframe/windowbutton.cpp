@@ -10,14 +10,14 @@
 
 namespace QWK {
 
-    WindowButtonPrivate::WindowButtonPrivate() = default;
+    WindowWindowbarButtonPrivate::WindowWindowbarButtonPrivate() = default;
 
-    WindowButtonPrivate::~WindowButtonPrivate() = default;
+    WindowWindowbarButtonPrivate::~WindowWindowbarButtonPrivate() = default;
 
-    void WindowButtonPrivate::init() {
+    void WindowWindowbarButtonPrivate::init() {
     }
 
-    void WindowButtonPrivate::reloadIcon() {
+    void WindowWindowbarButtonPrivate::reloadIcon() {
         Q_Q(WindowButton);
 
         if (!q->isEnabled() && !iconDisabled.isNull()) {
@@ -35,7 +35,7 @@ namespace QWK {
         }
     }
 
-    WindowButton::WindowButton(QWidget *parent) : WindowButton(*new WindowButtonPrivate(), parent) {
+    WindowButton::WindowButton(QWidget *parent) : WindowButton(*new WindowWindowbarButtonPrivate(), parent) {
     }
 
     WindowButton::~WindowButton() = default;
@@ -84,7 +84,7 @@ namespace QWK {
         }
     }
 
-    WindowButton::WindowButton(WindowButtonPrivate &d, QWidget *parent)
+    WindowButton::WindowButton(WindowWindowbarButtonPrivate &d, QWidget *parent)
         : QPushButton(parent), d_ptr(&d) {
         d.q_ptr = this;
 

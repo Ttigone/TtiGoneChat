@@ -1,5 +1,5 @@
 #include "qtmaterialripple.h"
-#include "qtmaterialrippleoverlay.h"
+#include "lib/qtmaterialrippleoverlay.h"
 
 /*!
  *  \class QtMaterialRipple

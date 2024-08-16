@@ -13,6 +13,7 @@ target_sources(lib_base PRIVATE
   base/integration.h base/integration.cpp
   base/timer.h base/timer.cpp
   base/debug_log.h base/debug_log.cpp
+  base/singleton.h
 )
 
 target_include_directories(lib_base

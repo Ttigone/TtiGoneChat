@@ -1,7 +1,7 @@
 ﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "ui/widgets/mb_window.h"
+#include "ui/widgets/self_window.h"
 #include "core/settings.h"
 
 namespace Core
@@ -17,7 +17,7 @@ namespace Window {
 class Controller;
 class SessionController;
 
-class MainWindow : public Ui::MbWindow {
+class MainWindow : public Ui::SelfWindow {
  public:
   explicit MainWindow(Window::Controller* controller);
   virtual ~MainWindow();

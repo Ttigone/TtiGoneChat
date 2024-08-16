@@ -127,4 +127,17 @@ void VerticalLayout::addStretch(int stretch) {
   addSpacerItem(
       new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
 }
+
+void VerticalLayout::addWidget(QWidget* widget, int stretch,
+                               Qt::Alignment alignment) {
+  widget->setParent(parentWidget());
+  QWidgetItem* item = new QWidgetItem(widget);
+  item->setAlignment(alignment);
+  addItem(item);
+
+  if (stretch > 0) {
+    addStretch(stretch);
+  }
+}
+
 }  // namespace Layout

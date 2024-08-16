@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.15)
+﻿cmake_minimum_required(VERSION 3.16)
 
 project(TtiGoneChat VERSION 0.1 LANGUAGES CXX)
 
@@ -15,11 +15,11 @@ set(PROJECT_SOURCES
 
     src/ui/chat/message_bubble.h src/ui/chat/message_bubble.cpp
     src/ui/widgets/fields/auto_complete_input_field.h src/ui/widgets/fields/auto_complete_input_field.cpp
-    src/ui/widgets/mb_window.h src/ui/widgets/mb_window.cpp
+    src/ui/widgets/self_window.h src/ui/widgets/self_window.cpp
     src/ui/widgets/windowbar.h src/ui/widgets/windowbar.cpp
     src/ui/widgets/windowbar_p.h 
-    src/ui/widgets/button.h src/ui/widgets/button.cpp
-    src/ui/widgets/button_p.h 
+    src/ui/widgets/windowbar_button.h src/ui/widgets/windowbar_button.cpp
+    src/ui/widgets/windowbar_button_p.h 
     src/ui/set_style.h src/ui/set_style.cpp
 
     src/local/account.h src/local/account.cpp
@@ -32,16 +32,16 @@ set(PROJECT_SOURCES
     src/core/settings.h src/core/settings.cpp
     src/core/tray.h src/core/tray.cpp
 
-    src/window/launcher.h src/window/launcher.cpp
     src/window/controller.h src/window/controller.cpp
     src/window/mainwindow.h src/window/mainwindow.cpp
     src/window/session_controller.h src/window/session_controller.cpp
     src/window/sidebar.h src/window/sidebar.cpp
+    src/window/window_media_preview.h src/window/window_media_preview.cpp
+    src/window/window_session_menu.h src/window/window_session_menu.cpp
 
     src/window/themes/window_theme.h src/window/themes/window_theme.cpp
 
     src/main.cpp
-    #src/app.h src/app.cpp
     src/stdafx.h
     src/config.h src/config.cpp
     src/main_window.h src/main_window.cpp
@@ -54,11 +54,14 @@ set(PROJECT_SOURCES
 
 
     src/storage/local_storage.h src/storage/local_storage.cpp
+    src/storage/session_storage.h src/storage/session_storage.cpp
 
     src/data/data_talk.h  src/data/data_talk.cpp
     src/data/data_talk_id.h  src/data/data_talk_id.cpp
     src/data/data_msg_id.h  src/data/data_msg_id.cpp
     src/data/data_history_message.h  src/data/data_history_message.cpp
+    src/data/data_session_label.h  src/data/data_session_label.cpp
+    src/data/data_talk_init.h  src/data/data_talk_init.cpp
 
     src/settings/settings_type.h
     src/settings/common.h src/settings/common.cpp
@@ -83,11 +86,15 @@ get_filename_component(res_loc res REALPATH)
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 
 
+set(RES_QRC 
+  res/TtigoneChat.qrc
+  res/ui/icons/chat/T_Chat.qrc
+)
+
 qt_add_executable(TtiGoneChat
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         res/TtigoneChat.qrc
-
         # lib_base/base/basic_types.h
     )
 # Define target properties for Android with Qt 6 as:
@@ -115,6 +122,7 @@ include_directories(src)
 
 add_subdirectory(lib_base)
 add_subdirectory(lib_ui)
+add_subdirectory(lib_storage)
 
 
 
@@ -124,10 +132,12 @@ include_directories(${third_party})
 
 # target_link_libraries(TtiGoneChat PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
+
 target_link_libraries(TtiGoneChat
     PRIVATE
     desktop-app::lib_base
     desktop-app::lib_ui
+    desktop-app::lib_storage
     # qt-material
     # desktop-app::external_qt-material
     external_qt-material

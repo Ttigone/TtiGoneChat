@@ -16,16 +16,13 @@
 #include "lang/lang_translator.h"
 
 #include "window/controller.h"
-#include "window/launcher.h"
 #include "window/themes/window_theme.h"
 
-#include <iostream>
-#include <QDir>
 
 #include "base/debug_log.h"
 #include "media/view/overlay_widget.h"
 
-#include "ui/widgets/mb_window.h"
+#include "ui/widgets/self_window.h"
 
 namespace Core {
 
@@ -95,7 +92,7 @@ void Application::run() {
   // 开启领域
   startDomain();
 
-  // Ui::MbWindow *m = new Ui::MbWindow();
+  // Ui::SelfWindow *m = new Ui::SelfWindow();
   // m->setStyleSheet(QString::fromUtf8(Window::Theme::readThemeContent("F:/MyProject/TtiGoneChat/TtiGoneChat/res/themes/dark-style.qss")));
   // m->show();
   // 首次展示
@@ -208,7 +205,11 @@ bool Application::eventFilter(QObject* watched, QEvent* event) {
  	return QObject::eventFilter(watched, event);
 }
 
-void Application::startLocalStorage() { Storage::start(); }
+void Application::startLocalStorage()
+{
+	Storage::start();
+
+}
 
 void Application::startShortcuts() {}
 

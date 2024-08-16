@@ -1,8 +1,8 @@
-#include "qtmaterialcheckable_internal.h"
+#include "lib/qtmaterialcheckable_internal.h"
 #include <QPainter>
 #include <QIcon>
 #include <QTransform>
-#include "qtmaterialcheckable.h"
+#include "lib/qtmaterialcheckable.h"
 
 /*!
  *  \class QtMaterialCheckableIcon

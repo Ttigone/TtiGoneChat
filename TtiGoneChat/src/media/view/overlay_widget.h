@@ -10,6 +10,16 @@
 #define OVERLAY_WIDGET_H
 
 #include <QWidget>
+#include <QHBoxLayout>
+
+#include "ui/mb_widget.h"
+#include "ui/widgets/mb_window.h"
+
+
+namespace Layout
+{
+class HorizontalLayout;
+} // namespace Layout
 
 namespace Window
 {
@@ -34,7 +44,20 @@ class OverlayWidget final : public QWidget {
 
   bool right_detial_visible_ = false;
 
+  bool full_screen_inited_ = false;
+  bool normal_geometry_inited_ = false;
+  bool full_screen_ = false;
+
+  //const not_null<QWidget *> widget_;
+
+  const not_null<Ui::MbWidget *> widget_;
+  //QWidget * widget_;
+  QHBoxLayout *main_layout_;
+  //Layout::HorizontalLayout *main_layout_;
+  
   std::unique_ptr<Window::SideBar> side_bar_;
+
+  const not_null<Ui::MbWindow *> window_; 
 
 
 };

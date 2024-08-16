@@ -6,8 +6,8 @@
  * \date   August 2024
  *********************************************************************/
 
-#ifndef BUTTONS_H
-#define BUTTONS_H
+#ifndef UI_WIDGETS_BUTTONS_H
+#define UI_WIDGETS_BUTTONS_H
 
 #include "ui/abstract_button.h"
 //#include  "ui/controls/conner_button.h"
@@ -128,4 +128,4 @@ class WordsButton : public AbstractButton {
 }  // namespace Ui
 
 
-#endif  // BUTTONS_H
+#endif  // UI_WIDGETS_BUTTONS_H

@@ -36,6 +36,7 @@ class VerticalLayout : public QLayout {
   void addSpacerItem(QSpacerItem *spacerItem);
 
   void addStretch(int stretch = 0);
+  void addWidget(QWidget* widget, int stretch, Qt::Alignment alignment);
 
   // void setSpacing(int spacing);
   // int spacing() const;

@@ -1,4 +1,4 @@
-﻿#include "lang_translator.h"
+﻿#include "lang/lang_translator.h"
 
 #include "base/basic_types.h"
 

@@ -7,20 +7,22 @@
         <file>ui/icons/sys/more-line.svg</file>
         <file>ui/icons/sys/restore.svg</file>
         <file>ui/icons/sys/app_icon.png</file>
-        <file>ui/icons/mediaview/attachment-hover.svg</file>
-        <file>ui/icons/mediaview/attachment-normal.svg</file>
-        <file>ui/icons/mediaview/calendar-hover.svg</file>
-        <file>ui/icons/mediaview/calendar-normal.svg</file>
-        <file>ui/icons/mediaview/char-hover.svg</file>
-        <file>ui/icons/mediaview/char-nomal.svg</file>
-        <file>ui/icons/mediaview/mark-hover.svg</file>
-        <file>ui/icons/mediaview/mark-normal.svg</file>
-        <file>ui/icons/mediaview/rating-hover.svg</file>
-        <file>ui/icons/mediaview/rating-normal.svg</file>
-        <file>ui/icons/mediaview/settings-hover.svg</file>
-        <file>ui/icons/mediaview/settings-normal.svg</file>
-        <file>ui/icons/mediaview/task-hover.svg</file>
-        <file>ui/icons/mediaview/task-normal.svg</file>
+        <file>ui/icons/mediaview/attachment-hover.png</file>
+        <file>ui/icons/mediaview/attachment-normal.png</file>
+        <file>ui/icons/mediaview/calendar-hover.png</file>
+        <file>ui/icons/mediaview/calendar-normal.png</file>
+        <file>ui/icons/mediaview/chat-hover.png</file>
+        <file>ui/icons/mediaview/chat-normal.png</file>
+        <file>ui/icons/mediaview/horizontal_bar-hover.png</file>
+        <file>ui/icons/mediaview/horizontal_bar-normal.png</file>
+        <file>ui/icons/mediaview/mark-hover.png</file>
+        <file>ui/icons/mediaview/mark-normal.png</file>
+        <file>ui/icons/mediaview/rating-hover.png</file>
+        <file>ui/icons/mediaview/rating-normal.png</file>
+        <file>ui/icons/mediaview/settings-hover.png</file>
+        <file>ui/icons/mediaview/settings-normal.png</file>
+        <file>ui/icons/mediaview/work-hover.png</file>
+        <file>ui/icons/mediaview/work-normal.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file>themes/dark-style.qss</file>

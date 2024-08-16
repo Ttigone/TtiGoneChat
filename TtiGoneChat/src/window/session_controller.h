@@ -1,4 +1,13 @@
-﻿#ifndef SESSIONCONTROLLER_H
+﻿/*****************************************************************//**
+ * \file   session_controller.h
+ * \brief  
+ * 
+ * \author C3H3_Ttigone
+ * \date   August 2024
+ *********************************************************************/
+
+
+#ifndef SESSIONCONTROLLER_H
 #define SESSIONCONTROLLER_H
 
 #include "settings/settings_type.h"
@@ -24,10 +33,12 @@ struct SectionShow {
 	};
 };
 
+
 class SessionController {
 public:
 	// 会话管理器, 窗口控制器
 	SessionController(Local::Session *session, Controller *window);
+	SessionController();
 	~SessionController();
 
 

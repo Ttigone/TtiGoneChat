@@ -7,6 +7,8 @@
 
 #include "window/themes/window_theme.h"
 
+#include "storage/session_storage.h"
+
 namespace Window
 {
 	namespace Theme
@@ -25,6 +27,11 @@ void start()
   LoadConfigFile();
 	InitialLoadTheme();
 	readLangPack();
+
+	Storage::writeSessionLabelLocation();
+
+  Storage::readStorageSessionLabelLocation();
+
 }
 
 

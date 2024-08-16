@@ -9,7 +9,7 @@
 
 namespace QWK {
 
-    class WindowButtonPrivate;
+    class WindowWindowbarButtonPrivate;
 
     class WindowButton : public QPushButton {
         Q_OBJECT
@@ -40,9 +40,9 @@ namespace QWK {
         void mouseDoubleClickEvent(QMouseEvent *event) override;
 
     protected:
-        WindowButton(WindowButtonPrivate &d, QWidget *parent = nullptr);
+        WindowButton(WindowWindowbarButtonPrivate &d, QWidget *parent = nullptr);
 
-        QScopedPointer<WindowButtonPrivate> d_ptr;
+        QScopedPointer<WindowWindowbarButtonPrivate> d_ptr;
     };
 
 }

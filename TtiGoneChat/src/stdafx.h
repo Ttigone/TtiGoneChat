@@ -39,6 +39,7 @@
 #include <QString>
 #include <QStringList>
 #include <QVector>
+#include <QDir>
 
 // QtGui
 #include <QIcon>
@@ -76,6 +77,7 @@
 
 #include "base/basic_types.h"
 #include "base/invoke_queued.h"
+#include "base/debug_log.h"
 
 
 #include "config.h"

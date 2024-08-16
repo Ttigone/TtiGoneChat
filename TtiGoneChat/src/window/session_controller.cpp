@@ -7,6 +7,10 @@ namespace Window {
 	{
 	}
 
+	SessionController::SessionController()
+	{
+	}
+
 	SessionController::~SessionController()
 	{
 	}
