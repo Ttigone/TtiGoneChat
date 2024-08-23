@@ -30,9 +30,11 @@ namespace Storage {
 
 using base::Singleton;
 
-static DatabaseConfig tSessionLabelConfig;
+//static DatabaseConfig tSessionLabelConfig;
+extern DatabaseConfig tSessionLabelConfig;
 
-static std::vector<StorageSessionLabel> tSessionLabelData;
+//static std::vector<StorageSessionLabel> tSessionLabelData;
+extern QVector<StorageSessionLabel> tSessionLabelData;
 
 // 初始时写入用户信息
 extern void writeSessionLabelLocation();
@@ -40,7 +42,8 @@ extern void writeSessionLabelLocation();
 // 初始时读取用户信息
 extern int64 readStorageSessionLabelLocation();
 
-
+// 动态读取用户信息
+extern QVector<StorageSessionLabel> fetchDataFromDatabase(int page, int page_size);
 
 }  // namespace Storage
 

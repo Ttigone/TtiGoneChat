@@ -105,7 +105,6 @@ class WordsButton : public AbstractButton {
   void setConnerEnable(bool enable = false);
 
 
-
  protected:
   void paintEvent(QPaintEvent *event) override;
   void enterEvent(QEnterEvent *event) override;

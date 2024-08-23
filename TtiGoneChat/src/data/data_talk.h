@@ -14,11 +14,11 @@ class TalkData {
   TalkData();
   virtual ~TalkData();
 
-  TalkData(const TalkData& other) = delete;
-  TalkData &operator=(const TalkData& other) = delete;
+  //TalkData(const TalkData& other) = delete;
+  //TalkData &operator=(const TalkData& other) = delete;
 
-  [[nodiscard]] Local::Session &session() const ;
-  [[nodiscard]] Local::Account &account() const;
+  //[[nodiscard]] Local::Session &session() const ;
+  //[[nodiscard]] Local::Account &account() const;
 
   /// @brief 是否是用户
   [[nodiscard]] bool isUser() const { return true; }

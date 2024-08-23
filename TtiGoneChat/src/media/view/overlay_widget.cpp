@@ -2,12 +2,13 @@
 
 #include "window/sidebar.h"
 #include "window/window_media_preview.h"
-
+#include "window/window_session_menu.h"
 #include "window/session_controller.h"
 
 #include "layout/horizontal_layout.h"
 
-#include <window/window_session_menu.h>
+#include "ui/widgets/fields/completer_field.h"
+
 
 #include <QLabel>
 #include <QVBoxLayout>
@@ -62,16 +63,29 @@ OverlayWidget::OverlayWidget(QWidget* parent)
   //window_->setStyleSheet("background-color:Coral");
   //main_layout_->addWidget(window_);
 
+  QVBoxLayout *t_layout = new QVBoxLayout();
+
+  //Ui::Widgets::*t_input = new Ui::Widgets::CustomizeFields(this);
+  Window::CompleterField *t_input = new Window::CompleterField(this);
+
+
+
+
   Window::SessionMenu* t_menu = new Window::SessionMenu(this);
   t_menu->setMinimumWidth(200);
-  t_menu->setStyleSheet("QListView { border: none; }");
+  //t_menu->setStyleSheet("QListView { border: none; }");
 
-  main_layout_->addWidget(t_menu);
+  t_layout->addWidget(t_input);
+  t_layout->addWidget(t_menu);
+
+  main_layout_->addLayout(t_layout);
+  //main_layout_->addWidget(t_menu);
 
 
 
   //Window::MediaPreviewWidget *t_window = new Window::MediaPreviewWidget(this, Window::SessionController());
   Window::MediaPreviewWidget* t_window = new Window::MediaPreviewWidget(this);
+  t_window->setMinimumWidth(100);
   t_window->setStyleSheet("background-color: #a9beae");
 
   main_layout_->addWidget(t_window);

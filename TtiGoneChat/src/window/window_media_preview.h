@@ -1,6 +1,6 @@
-/*****************************************************************//**
+﻿/*****************************************************************//**
  * \file   window_media_preview.h
- * \brief  
+ * \brief  右侧聊天栏 ??
  * 
  * \author C3H3_Ttigone
  * \date   August 2024
@@ -11,6 +11,8 @@
 
 
 #include "ui/mb_widget.h"
+
+//#include "mess"
 
 namespace Window {
 

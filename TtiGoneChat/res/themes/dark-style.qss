@@ -121,3 +121,34 @@ QWidget{
 QWidget[custom-style=true] {
     background-color: transparent;
 }
+
+/* QScrollBar */
+
+QScrollBar:vertical {
+	background: transparent; /*轨道背景的背景色*/
+	width: 8px; /*滚动条的宽度*/
+	margin: 0px; /* 移除滚动条与 滑块的间距 */
+}
+
+QScrollBar::handle:vertical {
+	background: rgb(173, 170, 169); /*滑块的颜色*/
+	min-height: 10px; /*滑块的最小高度*/
+	border-radius: 4px;/*滑块的圆角*/
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+	height: 0px; /*上下按钮*/
+  border: none; /*去掉边框*/
+  background: transparent; /*背景透明*/
+}
+
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+  background: transparent; /*页面滚动部分背景透明*/
+}
+
+/* QListView */
+QListView {
+background-color: transparent;
+		border: none;
+}

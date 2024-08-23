@@ -2,7 +2,6 @@
 
 #include "base/debug_log.h"
 
-
 namespace Cfg {
 
 int windowMinWidth;

@@ -1,6 +1,6 @@
 set(project_langs C CXX)
 
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 project(TtiGoneChat
     LANGUAGES ${project_langs}

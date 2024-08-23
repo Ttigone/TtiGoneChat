@@ -32,7 +32,7 @@ AbstractButton::AbstractButton(const QString& normal_image_path,
   setImage(QImage(normal_image_path), QImage(entry_image_path));
 }
 
-AbstractButton::~AbstractButton() {}
+AbstractButton::~AbstractButton() = default;
 
 void AbstractButton::setDisabled(bool disabled) {
   auto was = state_;
@@ -62,7 +62,7 @@ std::vector<QImage> AbstractButton::getImage() const {
   if (!normal_image_.isNull() && !entry_image_.isNull()) {
     return std::vector<QImage>{normal_image_, entry_image_};
   }
-  return std::vector<QImage>();
+  return {};
 }
 
 void AbstractButton::setImage(const QImage& image)
@@ -80,7 +80,8 @@ void AbstractButton::setImage(const QImage& normal_image,
 }
 
 void AbstractButton::setImage(const QString& normal_image_path,
-                              const QString& entry_image_path) { setImage(QImage(normal_image_path), QImage(entry_image_path));
+                              const QString& entry_image_path) {
+  setImage(QImage(normal_image_path), QImage(entry_image_path));
 }
 
 QRectF AbstractButton::imageRect() const { return image_rect_; }
@@ -108,38 +109,6 @@ void AbstractButton::clicked(Qt::KeyboardModifiers modifiers,
   }
 }
 
-// void AbstractButton::paintEvent(QPaintEvent* event)
-//{
-//	QWidget::paintEvent(event);
-//   if (image_.isNull()) {
-//     return;
-//   }
-//   QPainter painter(this);
-//   painter.setRenderHint(QPainter::Antialiasing, true);
-//   painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-//
-//   QRectF rect;
-//   rect.setX(this->x());
-//   rect.setY(this->y());
-//   rect.setWidth(this->width() - 1);
-//   rect.setHeight(this->height() - 1);
-//
-//   // QImage image(image_path);
-//   // qDebug() << "test";
-//
-//   image_rect_ = QRectF(0, 0, this->width(), this->height());
-//
-//   // painter.drawImage(rect,
-//   //                   image_.scaled(rect.size().toSize(),
-//   Qt::KeepAspectRatio,
-//   //                                 Qt::SmoothTransformation));
-//
-//   painter.drawImage(
-//       image_rect_, image_.scaled(image_rect_.size().toSize(),
-//       Qt::KeepAspectRatio,
-//                                Qt::SmoothTransformation));
-// }
-//
 void AbstractButton::enterEvent(QEnterEvent* event) {
   // 右边进入无相应
   // LOG_DEBUG() << "DSADASDASCCCCCCC";
@@ -148,10 +117,9 @@ void AbstractButton::enterEvent(QEnterEvent* event) {
 }
 
 void AbstractButton::leaveEvent(QEvent* event) {
-  if (state_ & StateFlag::Down) {
-    return;
+  if (!(state_ & StateFlag::Down)) {
+		setHover(false, StateChangedSource::ByHover);
   }
-  setHover(false, StateChangedSource::ByHover);
   QWidget::leaveEvent(event);
 }
 
@@ -159,9 +127,8 @@ void AbstractButton::mousePressEvent(QMouseEvent* event) {
   checkContainPoint(event->pos());
   // 处于覆盖状态
   if (state_ & StateFlag::Hover) {
-    const auto set = setDown(true, StateChangedSource::ByPress,
-                             event->modifiers(), event->button());
-    if (set) {
+    if (setDown(true, StateChangedSource::ByPress, event->modifiers(),
+                event->button())) {
       event->accept();
     }
   }
@@ -169,18 +136,14 @@ void AbstractButton::mousePressEvent(QMouseEvent* event) {
 }
 
 void AbstractButton::mouseMoveEvent(QMouseEvent* event) {
-  if (rect().marginsRemoved(contentsMargins()).contains(event->pos())) {
-    setHover(true, StateChangedSource::ByHover);
-  } else {
-    setHover(false, StateChangedSource::ByHover);
-  }
+  setHover(rect().marginsRemoved(contentsMargins()).contains(event->pos()),
+           StateChangedSource::ByHover);
   QWidget::mouseMoveEvent(event);
 }
 
 void AbstractButton::mouseReleaseEvent(QMouseEvent* event) {
-  const auto set = setDown(false, StateChangedSource::ByPress,
-                           event->modifiers(), event->button());
-  if (set) {
+  if (setDown(false, StateChangedSource::ByPress, event->modifiers(),
+              event->button())) {
     event->accept();
   }
   QWidget::mouseReleaseEvent(event);
@@ -191,7 +154,7 @@ void AbstractButton::setHover(bool hover, StateChangedSource source) {
   if (hover == isHover()) {
     return;
   }
-  const auto was = state_;
+  auto was = state_;
   if (hover) {
     state_ |= StateFlag::Hover;
   } else {
@@ -233,7 +196,7 @@ bool AbstractButton::setDown(bool down, StateChangedSource source,
   return false;
 }
 
-void AbstractButton::initialSize(int w, int h) { this->setFixedSize(w, h); }
+void AbstractButton::initialSize(int w, int h) { setFixedSize(w, h); }
 
 void AbstractButton::updateCursor() {
   // 启用鼠标指针, 并且覆盖
@@ -246,9 +209,6 @@ void AbstractButton::updateCursor() {
 }
 
 void AbstractButton::checkContainPoint(QPoint point) {
-  auto hover = rect().marginsRemoved(contentsMargins()).contains(point);
-  // LOG_DEBUG() << "SDAD";
-  // qDebug() << hover;
-  setHover(hover, StateChangedSource::ByHover);
+  setHover(rect().marginsRemoved(contentsMargins()).contains(point), StateChangedSource::ByHover);
 }
 }  // namespace Ui

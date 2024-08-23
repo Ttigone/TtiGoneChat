@@ -9,6 +9,9 @@
 #ifndef BASE_SINGLETON_H
 #define BASE_SINGLETON_H
 
+#include <memory>
+#include <mutex>
+
 namespace base {
 
 template <class T>
@@ -16,16 +19,25 @@ class Singleton {
  public:
   template <typename... Args>
   static T* Instance(Args&&... args) {
+    //std::call_once(flag_,
+    //               [&]() { instance_ = new T(std::forward<Args>(args)...); });
+    //return instance_;
+
     std::call_once(flag_,
-                   [&]() { instance_ = new T(std::forward<Args>(args)...); });
-    return instance_;
+                   [&]() {
+      instance_.reset(new T(std::forward<Args>(args)...));
+		});
+      return instance_.get();
   }
 
   static void destroy() {
-    if (instance_) {
-      delete instance_;
-      instance_ = NULL;
-    }
+    // if (instance_) {
+    //   //qDebug() << "xigou";
+    //   delete instance_;
+    //   instance_ = NULL;
+    // }
+    qDebug() << "de";
+    std::call_once(destroy_flag, [&]() { instance_.reset(nullptr); });
   }
 
  private:
@@ -35,15 +47,19 @@ class Singleton {
   Singleton& operator=(const Singleton&) = delete;
 
 
-  static T* instance_;
+  static std::unique_ptr<T>instance_;
   static std::once_flag flag_;
-};
+  static std::once_flag destroy_flag;
+  };
 
 template <class T>
-T* Singleton<T>::instance_ = NULL;
+std::unique_ptr<T> Singleton<T>::instance_ = nullptr;
 
 template <class T>
 std::once_flag Singleton<T>::flag_;
+
+template <class T>
+std::once_flag Singleton<T>::destroy_flag;
 
 } // namespace base
 

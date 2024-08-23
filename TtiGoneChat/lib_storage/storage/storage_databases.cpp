@@ -3,8 +3,10 @@
 
 namespace storage {
 
-Databases::~Databases()
-{ database_.close(); }
+Databases::~Databases() {
+  database_.close();
+  //qDebug() << "TEST";
+}
 
 QSqlDatabase Databases::getDatabase() {
   if (QSqlDatabase::database().isValid()) {

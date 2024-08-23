@@ -23,6 +23,10 @@
         <file>ui/icons/mediaview/settings-normal.png</file>
         <file>ui/icons/mediaview/work-hover.png</file>
         <file>ui/icons/mediaview/work-normal.png</file>
+        <file>ui/icons/mediaview/circle_close-hover.png</file>
+        <file>ui/icons/mediaview/circle_close-normal.png</file>
+        <file>ui/icons/mediaview/search-hover.png</file>
+        <file>ui/icons/mediaview/search-normal.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file>themes/dark-style.qss</file>

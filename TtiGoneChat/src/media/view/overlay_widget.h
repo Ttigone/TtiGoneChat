@@ -26,6 +26,7 @@ namespace Window
 	class SideBar;
 } // namespace Window 
 
+
 namespace Media {
 
 namespace View
@@ -36,10 +37,15 @@ class OverlayWidget final : public QWidget {
   explicit OverlayWidget(QWidget *parent = nullptr);
   ~OverlayWidget();
 
-  //void hide();
+  enum class OverlayWidgetMode : uchar {
+    SearchMode = 0x01,
+		ChatMode,
+    ContactMode,
+  };
+  // void hide();
 
  private:
-   // 启动 opengl
+  // 启动 opengl
   bool opengl_ = false;
 
   bool right_detial_visible_ = false;
@@ -48,18 +54,19 @@ class OverlayWidget final : public QWidget {
   bool normal_geometry_inited_ = false;
   bool full_screen_ = false;
 
-  //const not_null<QWidget *> widget_;
+  OverlayWidgetMode mode_ = OverlayWidgetMode::ChatMode;
+  OverlayWidgetMode state_ = OverlayWidgetMode::ChatMode;
+
+  // const not_null<QWidget *> widget_;
 
   const not_null<Ui::MbWidget *> widget_;
-  //QWidget * widget_;
+  // QWidget * widget_;
   QHBoxLayout *main_layout_;
-  //Layout::HorizontalLayout *main_layout_;
-  
+  // Layout::HorizontalLayout *main_layout_;
+
   std::unique_ptr<Window::SideBar> side_bar_;
 
-  const not_null<Ui::MbWindow *> window_; 
-
-
+  const not_null<Ui::MbWindow *> window_;
 };
 
 }  // namespace View

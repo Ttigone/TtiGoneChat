@@ -9,30 +9,24 @@
 
 namespace Ui {
 CommonButton::CommonButton(QWidget* parent) : AbstractButton(parent) {
-  // this->setStyleSheet("background-color:Coral");
 }
 
 CommonButton::CommonButton(const QImage& image, QWidget* parent)
     : AbstractButton(image, parent) {
-  // this->setStyleSheet("background-color:Coral");
 }
 
 CommonButton::CommonButton(const QString& image_path, QWidget* parent)
     : AbstractButton(image_path, parent) {
-  // this->setStyleSheet("background-color:Coral");
 }
 
 CommonButton::CommonButton(const QImage& normal_image,
                            const QImage& entry_image, QWidget* parent)
     : AbstractButton(normal_image, entry_image, parent) {
-  // this->setStyleSheet("background-color:Coral");
 }
 
 CommonButton::CommonButton(const QString& normal_image_path,
                            const QString& entry_image_path, QWidget* parent)
     : AbstractButton(normal_image_path, entry_image_path, parent) {
-  // this->setStyleSheet("background-color:Coral");
-  // qDebug() << image().at(0) << image().at(1);
 }
 
 CommonButton::~CommonButton() {}
@@ -44,20 +38,15 @@ void CommonButton::paintEvent(QPaintEvent* event) {
   painter.setRenderHint(QPainter::Antialiasing, true);
   painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 
-  auto img = isHover() ? getImage().at(1) : getImage().at(0);
-
-  auto test_ = QPixmap::fromImage(img);
+  const auto img = isHover() ? getImage().at(1) : getImage().at(0);
+  const auto &test_ = QPixmap::fromImage(img);
   painter.drawPixmap(rect.toRect(),
       test_.scaled(rect.size().toSize(), Qt::KeepAspectRatio,
                    Qt::SmoothTransformation));
 
-  //painter.drawImage(rect, img.scaled(rect.size().toSize(), Qt::KeepAspectRatio,
-  //                                   Qt::SmoothTransformation));
-
   AbstractButton::paintEvent(event);
 }
 
-// ConnerButton::ConnerButton(QWidget *parent) : QWidget(parent) {
 ConnerButton::ConnerButton(QWidget* parent) : AbstractButton(parent) {
   setFixedSize(40, 40);
   conner_rect_ = QRectF(this->width() - icon_rect_.x() - 22, icon_rect_.y(), 18,
@@ -66,10 +55,6 @@ ConnerButton::ConnerButton(QWidget* parent) : AbstractButton(parent) {
 
   conner_font_.setFamily("Arial");
   conner_font_.setBold(true);
-
-  // font_size_ = 7;
-  // font_begin_size_ = 7;
-  // font_end_size_ = 9;
 
   setMouseTracking(true);
   conner_rect_animation_ = new QPropertyAnimation(this, "rect");
@@ -114,7 +99,6 @@ void ConnerButton::setRect(const QRectF& rect) {
 qint16 ConnerButton::fontSize() const { return font_size_; }
 
 void ConnerButton::setFontSize(const qint16& font_size) {
-  // qDebug() << "Get" << font_size;
   font_size_ = font_size;
   update();
 }
@@ -131,21 +115,8 @@ void ConnerButton::paintEvent(QPaintEvent* event) {
   // QSvgRenderer svgRenderer(QString("C:/Users/cssss/Downloads/chat-3-fill
   // (1).svg")); svgRenderer.render(&painter, iconRect);
 
-  // QString imagePath = is_hovering_image_ ?
-  // "C:/Users/cssss/Downloads/chat-hover.svg" :
-  // "C:/Users/cssss/Downloads/chat-normal.svg";
-  // QString imagePath = is_hovering_ ?
-  // "C:/Users/cssss/Downloads/chat-hover.svg"
-  //: "C:/Users/cssss/Downloads/chat-normal.svg";
-  // QImage image(imagePath);
-  // painter.drawImage(
-  //     icon_rect_, image.scaled(icon_rect_.size().toSize(),
-  //     Qt::KeepAspectRatio,
-  //                              Qt::SmoothTransformation));
-  // qDebug() << isHover();
-  // auto img = isHover() ? image().at(1) : image().at(0);
-  auto img = is_hovering_ ? getImage().at(1) : getImage().at(0);
-  auto test_ = QPixmap::fromImage(img);
+  const auto img = is_hovering_ ? getImage().at(1) : getImage().at(0);
+  const auto test_ = QPixmap::fromImage(img);
   painter.drawPixmap(
       icon_rect_.toRect(),
       test_.scaled(icon_rect_.size().toSize(), Qt::KeepAspectRatio,
@@ -153,12 +124,7 @@ void ConnerButton::paintEvent(QPaintEvent* event) {
 
   // conner_rect_ = QRectF(rect.width() - icon_Rect_.x() - 18, icon_Rect_.y(),
   // 18, 14); // 留出一点边距，防止图像紧贴边缘
-  qreal radius = 6;  // 圆角半径
-  if (conner_rect_.width() > this->width() / 2) {
-    radius = 8;
-  } else {
-    radius = 6;
-  }
+  const qreal radius = (conner_rect_.width() > this->width() / 2) ? 8 : 6;  // 圆角半径
 
   // 底色
   QBrush brush(QColor("#6f6f6f"));
@@ -197,21 +163,6 @@ void ConnerButton::enterEvent(QEnterEvent* event) {
 void ConnerButton::leaveEvent(QEvent* event) {
   is_hovering_ = false;
   is_hovering_image_ = false;
-  // qDebug() << "l";
-  // if (conner_rect_.width() > 18) {
-  //     animation_->setStartValue(conner_rect_);
-  //     animation_->setEndValue(QRectF(conner_rect_.x() + 4, conner_rect_.y() +
-  //     4, conner_rect_.width() - 8, conner_rect_.height() - 8));
-  //     animation_->start();
-  // }
-  // if (animation_->state() == QPropertyAnimation::Running) {
-  //     // qDebug() << ++i;
-  //     // qDebug() << "CC";
-  //     animation_->setStartValue(conner_rect_);
-  //     animation_->setEndValue(QRectF(conner_rect_.x() + 2, conner_rect_.y() +
-  //     2, conner_rect_.width() - 6, conner_rect_.height() - 6));
-  //     animation_->start();
-  // }
   update();
 }
 
@@ -219,63 +170,28 @@ void ConnerButton::mouseMoveEvent(QMouseEvent* event) {
   // qDebug() << this->width();
   // QRectF iconRect(2, 6, 30, 30); // 图像区域
   // 处于图像区域
-  if (icon_rect_.contains(event->pos())) {
-    if (!is_hovering_image_) {
-      is_hovering_image_ = true;
-      update();
-    }
-  } else {
-    if (is_hovering_image_) {
-      is_hovering_image_ = false;
-      update();
-    }
-  }
-  // qDebug() << font_animation_->state();
-  auto offset = zoom_radio_ * width();
-  if (conner_rect_.contains(event->pos())) {
-    // qDebug() << "TEST";
-    // qDebug() << conner_rect_;
-    if (conner_rect_.width() < (conner_rect_w + offset * 3)) {
-      // if ((conner_rect_animation_->state() != QPropertyAnimation::Running) &&
-      // (font_animation_->state() != QPropertyAnimation::Running)) {
-      if (animation_group_->state() != QPropertyAnimation::Running) {
-        // qDebug() << ++i;
-        conner_rect_animation_->setStartValue(conner_rect_);
-        conner_rect_animation_->setEndValue(
-            QRectF(conner_rect_.x() - offset, conner_rect_.y() - offset,
-                   conner_rect_.width() + offset * 3,
-                   conner_rect_.height() + offset * 3));
+  const bool was_hovering_image = is_hovering_image_;
+	is_hovering_image_ = icon_rect_.contains(event->pos());
+  if (was_hovering_image != is_hovering_image_) {
+		update();
+	}
+  const auto offset = zoom_radio_ * width();
+	const bool is_in_conner_rect = conner_rect_.contains(event->pos());
+  // 放大
+  const bool should_expand = is_in_conner_rect && conner_rect_.width() < (conner_rect_w + offset * 3);
+  // 缩小
+  const bool should_shrink = !is_in_conner_rect && conner_rect_.width() > conner_rect_w;
 
-        // 字体变大 7 - 9
-        // qDebug() << "out: " << font_size_;
-        // font_animation_->setStartValue(font_size_);
-        // font_animation_->setEndValue(font_size_ + 2);
-        // font_animation_->setEasingCurve(QEasingCurve::Linear);
-        // font_animation_->start();
-        // conner_rect_animation_->start();
-        animation_group_->start();
-      }
-    }
-  } else {
-    if (conner_rect_.width() > conner_rect_w) {
-      // if ((conner_rect_animation_->state() != QPropertyAnimation::Running) &&
-      // (font_animation_->state() != QPropertyAnimation::Running)) {
-      if (animation_group_->state() != QPropertyAnimation::Running) {
-        // qDebug() << ++i;
-        conner_rect_animation_->setStartValue(conner_rect_);
-        conner_rect_animation_->setEndValue(
-            QRectF(conner_rect_.x() + offset, conner_rect_.y() + offset,
-                   conner_rect_.width() - offset * 3,
-                   conner_rect_.height() - offset * 3));
-
-        // qDebug() << font_begin_size_;
-        // qDebug() << "In: " << font_size_;
-        // font_animation_->setStartValue(font_size_);
-        // font_animation_->setEndValue(font_size_ - 2);
-
-        animation_group_->start();
-      }
-    }
+  // 有操作发生
+  if ((should_expand || should_shrink) &&
+      animation_group_->state() != QPropertyAnimation::Running) {
+    conner_rect_animation_->setStartValue(conner_rect_);
+    conner_rect_animation_->setEndValue(QRectF(
+        conner_rect_.x() + (should_expand ? -offset : offset),
+        conner_rect_.y() + (should_expand ? -offset : offset),
+        conner_rect_.width() + (should_expand ? offset * 3 : -offset * 3),
+        conner_rect_.height() + (should_expand ? offset * 3 : -offset * 3)));
+    animation_group_->start();
   }
   QWidget::mouseMoveEvent(event);
 }
@@ -289,14 +205,10 @@ WordsButton::WordsButton(const QString& text, QWidget* parent)
 
 WordsButton::WordsButton(const QImage& image, const QString& text,
                          QWidget* parent)
-    //: AbstractButton(image, parent), bottom_words_(text)
     : WordsButton(text, parent) {
   setImage(image);
-  if (!is_conner_enable_) {
-    if (!getImage().empty()) {
-      cooperate_btn_ =
-          new CommonButton(getImage().at(0), getImage().at(1), this);
-    }
+  if (!is_conner_enable_ && !getImage().empty()) {
+    cooperate_btn_ = new CommonButton(getImage().at(0), getImage().at(1), this);
   }
 }
 
@@ -305,11 +217,8 @@ WordsButton::WordsButton(const QString& normal_image_path,
                          QWidget* parent)
     : WordsButton(text, parent) {
   setImage(normal_image_path, entry_image_path);
-  if (!is_conner_enable_) {
-    if (!getImage().empty()) {
-      cooperate_btn_ =
-          new CommonButton(getImage().at(0), getImage().at(1), this);
-    }
+  if (!is_conner_enable_ && !getImage().empty()) {
+    cooperate_btn_ = new CommonButton(getImage().at(0), getImage().at(1), this);
   }
 }
 
@@ -328,51 +237,23 @@ bool WordsButton::isConnerEnable() const { return is_conner_enable_; }
 void WordsButton::setConnerEnable(bool enable) {
   is_conner_enable_ = enable;
   // 启用角标
-  if (enable) {
-    // cooperate_btn_ = static_cast<ConnerButton *>(cooperate_btn_);
-    cooperate_btn_->deleteLater();
-    cooperate_btn_ = new ConnerButton(getImage().at(0), getImage().at(1), this);
-  } else {
-    cooperate_btn_->deleteLater();
-    cooperate_btn_ = new CommonButton(getImage().at(0), this);
-    // cooperate_btn_ = static_cast<CommonButton *>(cooperate_btn_);
-  }
+  cooperate_btn_->deleteLater();
+  cooperate_btn_ = enable ? static_cast<AbstractButton*>(new ConnerButton(
+                                getImage().at(0), getImage().at(1), this))
+                          : static_cast<AbstractButton*>(
+                                new CommonButton(getImage().at(0), this));
 }
 
 void WordsButton::paintEvent(QPaintEvent* event) {
-  // if (image().isNull()) {
-  //   return;
-  // }
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing, true);
   painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 
-  QRectF rect;
-  rect.setX(this->x());
-  rect.setY(this->y());
-  rect.setWidth(this->width() - 1);
-  rect.setHeight(this->height() - 1);
-
-  // QImage image(image_path);
-  // qDebug() << "test";
-
-  // image_rect_ = QRectF(0, 0, this->width(), this->height());
+  QRectF rect(0, 0, this->width() - 1, this->height() - 1);
   setImageRect(0, 0, image_size_.width(), image_size_.height());
 
-  // CommonButton::paintEvent(event);
-  auto imgRet = imageRect();
-
-  // auto img = isHover() ? image().at(1) : image().at(0);
-  // painter.drawImage(
-  //     imgRet, img.scaled(imgRet.size().toSize(), Qt::KeepAspectRatio,
-  //                              Qt::SmoothTransformation));
-
   painter.setFont(QFont("Arial", 7));
-  if (state() == StateFlag::Hover) {
-    painter.setPen(QPen("#ffffff"));
-  } else {
-    painter.setPen(QPen("#a9beae"));
-  }
+  painter.setPen(QPen(state() == StateFlag::Hover ? "#ffffff" : "a9beae"));
   painter.drawText(QRect(this->x(), this->height() - 10, words_size_.width(),
                          words_size_.height()),
                    Qt::AlignCenter, bottom_words_);

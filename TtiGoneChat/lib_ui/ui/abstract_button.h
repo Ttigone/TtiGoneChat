@@ -108,7 +108,7 @@ class AbstractButton : public QWidget {
   QImage normal_image_;
   QImage entry_image_;
   QRectF image_rect_;
-  bool mouse_is_inside_;
+  bool mouse_is_inside_ = false;
   QString image_path_;
 
   State state_ = StateFlag::None;

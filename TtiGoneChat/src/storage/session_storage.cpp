@@ -5,7 +5,6 @@
 
 #include <QSettings>
 
-
 // 使用宏来定义 StorageSessionLabel 结构体的成员信息
 DEFINE_STRUCT_MEMBERS(
     StorageSessionLabel,
@@ -15,7 +14,7 @@ DEFINE_STRUCT_MEMBERS(
     MEMBER_TYPE_AND_NAME(StorageSessionLabel, session_label_earily_msg),
     MEMBER_TYPE_AND_NAME(StorageSessionLabel, session_label_time));
 
-DatabaseConfig readDatabaseConfig(const QString &file_path) {
+DatabaseConfig readDatabaseConfig(const QString& file_path) {
   if (QFile::exists(file_path)) {
     LOG_INFO() << QObject::tr("数据库配置相关文件存在");
     QSettings settings(file_path, QSettings::IniFormat);
@@ -29,50 +28,64 @@ DatabaseConfig readDatabaseConfig(const QString &file_path) {
     config.password = settings.value("password").toString();
     settings.endGroup();
     return config;
-  } else
-  {
-	  LOG_FATAL() << QObject::tr("数据库配置相关文件不存在");
-    return {};
-  }
-}
-
-StorageSessionLabel readInitialUser(const QString &file_path) {
-  if (QFile::exists(file_path)) {
-    LOG_INFO() << QObject::tr("正在读取初始时已经存在的用户");
-    QSettings settings(file_path, QSettings::IniFormat);
-    settings.beginGroup("InitialTalk");
-    StorageSessionLabel config;
-    config.session_label_id = settings.value("id_").toInt();
-    config.session_label_icon_path = settings.value("icon_path_").toString();
-    config.session_label_name = settings.value("name_").toString();
-    config.session_label_earily_msg = settings.value("earily_msg_").toString();
-    config.session_label_time = settings.value("time_").toString();
-    settings.endGroup();
-    return config;
   } else {
     LOG_FATAL() << QObject::tr("数据库配置相关文件不存在");
     return {};
   }
 }
 
+std::vector<StorageSessionLabel> readInitialUser(const QString& file_path) {
+  std::vector<StorageSessionLabel> userConfig;
+  if (QFile::exists(file_path)) {
+    LOG_INFO() << QObject::tr("正在读取初始时已经存在的用户");
+    QSettings settings(file_path, QSettings::IniFormat);
+    QStringList groups = settings.childGroups();
+    for (const QString& group : groups) {
+      if (group.startsWith("InitialTalk")) {
+        settings.beginGroup(group);
+        StorageSessionLabel config;
+        config.session_label_id = settings.value("id_").toInt();
+        config.session_label_icon_path =
+            settings.value("icon_path_").toString();
+        config.session_label_name = settings.value("name_").toString();
+        config.session_label_earily_msg =
+            settings.value("earily_msg_").toString();
+        config.session_label_time = settings.value("time_").toString();
+        settings.endGroup();
+        userConfig.push_back(config);
+      }
+    }
+  } else {
+    LOG_FATAL() << QObject::tr("数据库配置相关文件不存在");
+    return {};
+  }
+  return userConfig;
+}
+
 namespace Storage {
+
+DatabaseConfig tSessionLabelConfig;
+
+QVector<StorageSessionLabel> tSessionLabelData;
 
 void writeSessionLabelLocation() {
   tSessionLabelConfig = readDatabaseConfig(
       "F:/MyProject/TtiGoneChat/TtiGoneChat/src/settings/databases/config.ini");
 
   if (tSessionLabelConfig.isValid()) {
-    auto dataBases = Singleton<storage::Databases>::Instance(tSessionLabelConfig);
+    auto dataBases =
+        Singleton<storage::Databases>::Instance(tSessionLabelConfig);
     dataBases->openDb();
 
     dataBases->createTable<StorageSessionLabel>(tSessionLabelConfig.table);
 
     //StorageSessionLabel label = {0, "path/to/icon", "Name", "Last message",
     //                             "2024-08-01"};
-    
+
     //auto tem = readInitialUser("F:/MyProject/TtiGoneChat/TtiGoneChat/src/settings/databases/config.ini");
 
-    //dataBases->insertSingleData(tSessionLabelConfig.table, tem);
+    //qDebug() << tem.size();
+    //dataBases->insertMultipleData(tSessionLabelConfig.table, tem);
 
     //auto t = dataBases->queryDataById<StorageSessionLabel>(tSessionLabelConfig.table, 0);
     //if (t.has_value())
@@ -80,7 +93,7 @@ void writeSessionLabelLocation() {
     //  auto val = t.value();
     //  qDebug() << val.session_label_icon_path;
     //}
-    
+
     //storage::DataInserter inserter(dataBases);
     //if (!inserter.insertSingleData("session_labels", label)) {
     //}
@@ -104,12 +117,18 @@ int64 readStorageSessionLabelLocation() {
   auto dataBases = Singleton<storage::Databases>::Instance(tSessionLabelConfig);
   dataBases->openDb();
 
-  tSessionLabelData =
-      dataBases->queryAllData<StorageSessionLabel>(tSessionLabelConfig.table);
+  //tSessionLabelData =
+  //    dataBases->queryAllData<StorageSessionLabel>(tSessionLabelConfig.table);
+  tSessionLabelData = fetchDataFromDatabase(1, 10);
 
-
+  //Singleton<storage::Databases>::destroy();
   return tSessionLabelData.size();
-  
 }
 
+QVector<StorageSessionLabel> fetchDataFromDatabase(int page, int page_size) {
+  auto dataBases = Singleton<storage::Databases>::Instance(tSessionLabelConfig);
+  dataBases->openDb();
+
+  return dataBases->queryDataByPage<StorageSessionLabel>(tSessionLabelConfig.table, page, page_size);
+}
 }  // namespace Storage

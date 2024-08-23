@@ -1,117 +1,192 @@
 ﻿#include "window/window_session_menu.h"
 
-#include <QPainter>
 
 #include "data/data_session_label.h"
 #include "storage/session_storage.h"
 
+#include <QPainter>
+#include <QScrollBar>
+#include <QPointer>
+
+#include <QTimer>
+
 namespace Window {
-SessionLabelDelegate::SessionLabelDelegate(QObject* parent)
-{ qDebug() << "SessionLabelDelegate";
-}
+SessionLabelDelegate::SessionLabelDelegate(QObject* parent) {}
 
 void SessionLabelDelegate::paint(QPainter* painter,
                                  const QStyleOptionViewItem& option,
                                  const QModelIndex& index) const {
-  //qDebug() << "paint";
-  if (index.isValid()) {
-    painter->save();
-    painter->setRenderHint(QPainter::Antialiasing, true);
-    painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
-
-  //  QVariant var = index.data(tRole);
-  //  // 转换成对应类型的数据
-  //  auto data = var.value<StorageSessionLabel>();
-
-  //  QRectF rect;
-  //  rect.setX(option.rect.x());
-  //  rect.setY(option.rect.y());
-  //  rect.setWidth(option.rect.width() - 1);
-  //  rect.setHeight(option.rect.height() - 1);
-
-  //  QPainterPath path;
-  //  path.moveTo(rect.topLeft());
-  //  path.lineTo(rect.topRight());
-  //  path.quadTo(rect.topRight(), rect.topRight());
-  //  path.lineTo(rect.bottomRight());
-  //  path.quadTo(rect.bottomRight(), rect.bottomRight());
-  //  path.lineTo(rect.bottomLeft());
-  //  path.quadTo(rect.bottomLeft(), rect.bottomLeft());
-  //  path.lineTo(rect.topLeft());
-  //  path.quadTo(rect.topLeft(), rect.topLeft());
-
-  //  // 当前被选中
-  //  if (option.state.testFlag(QStyle::State_Selected)) {
-  //    painter->setPen(QPen(QColor("#e3e3e5")));
-  //    painter->setBrush(QBrush(QColor("#e3e3e5")));
-  //    painter->drawPath(path);
-  //  }
-  //  // 鼠标移动到上面
-  //  if (option.state.testFlag(QStyle::State_MouseOver)) {
-  //    painter->setPen(QPen(QColor("#ebeced")));
-  //    painter->setBrush(QBrush(QColor("#ebeced")));
-  //    painter->drawPath(path);
-  //  }
-
-  //  // 设定图片, 名称, 最新消息, 时间 的位置
-  //  QRectF iconRect = QRectF(rect.x() + 6, rect.y() + 11, 35, 35);
-  //  QRectF nameRect =
-  //      QRectF(iconRect.right() + 3, iconRect.top() - 3, rect.width() - 36, 20);
-  //  QRectF msgRect =
-  //      QRectF(nameRect.x(), nameRect.bottom() + 3, nameRect.width() - 36, 20);
-  //  QRectF timeRect = QRectF(rect.width() - 40, iconRect.top(), 40, 20);
-
-  //  // painter->drawPixmap(iconRect,
-  //  // QPixmap::fromImage(QImage(data.session_label_icon_path)));
-  //  // painter->drawPixmap(iconRect, QPixmap(data.session_label_icon_path));
-  //  // 绘制头像
-  //  auto p = QPixmap(data.session_label_icon_path);
-  //  painter->drawPixmap(iconRect.toRect(),
-  //                      p.scaled(iconRect.size().toSize(), Qt::KeepAspectRatio,
-  //                               Qt::SmoothTransformation));
-
-  //  // 绘制名称
-  //  painter->setPen(QPen(Qt::black));
-  //  painter->setFont(QFont("Arial", 10));
-  //  painter->drawText(nameRect, data.session_label_name);
-
-  //  // 绘制最新消息
-  //  painter->setPen(QPen(Qt::gray));
-  //  painter->drawText(msgRect, data.session_label_earily_msg);
-
-  //  // 绘制时间
-  //  painter->setPen(QPen(Qt::gray));
-  //  painter->drawText(timeRect, data.session_label_time);
-
-    painter->restore();
+  if (!index.isValid()) {
+    return;
   }
-    //return QStyledItemDelegate().paint(painter, option, index);
+  painter->save();
 
+  // 超出范围 vector
+  QVariant var = index.data(tRole);
+  //  // 转换成对应类型的数据
+  auto data = var.value<StorageSessionLabel>();
+
+   const QRectF rect(option.rect.x(), option.rect.y(), option.rect.width(),
+                    option.rect.height());
+
+  // int scrollBarWidth =
+  //     option.widget->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+  // qDebug() << scrollBarWidth;
+
+  // int fixedWidth = option.rect.width() - scrollBarWidth - 1;
+
+  QPainterPath path;
+	path.addRoundedRect(rect, 0, 0);
+
+
+	painter->setPen(QPen(Qt::NoPen));
+  // 当前被选中
+  if (option.state.testFlag(QStyle::State_Selected)) {
+    painter->setBrush(QBrush(QColor("#e3e3e5")));
+  }
+  // 鼠标移动到上面
+  else if (option.state.testFlag(QStyle::State_MouseOver)) {
+    painter->setBrush(QBrush(QColor("#ebeced")));
+  } else
+  {
+    painter->setBrush(QBrush(Qt::NoBrush));
+  }
+	painter->drawPath(path);
+
+  // 设定图片, 名称, 最新消息, 时间 的位置
+  QRectF iconRect = QRectF(rect.x() + 6, rect.y() + 11, 35, 35);
+  QRectF nameRect =
+      QRectF(iconRect.right() + 3, iconRect.top() - 3, rect.width() - 36, 20);
+
+  QRectF msgRect =
+      QRectF(nameRect.x(), nameRect.bottom() + 3, nameRect.width() - 36, 20);
+
+  QRectF timeRect = QRectF(rect.width() - 60, iconRect.top(), 60, 20);
+
+  QPixmap p;
+  if (icon_cache.contains(data.session_label_icon_path))
+  {
+    p = icon_cache.value(data.session_label_icon_path);
+  } else
+  {
+    p = QPixmap(data.session_label_icon_path);
+    icon_cache.insert(data.session_label_icon_path, p);
+  }
+  painter->drawPixmap(iconRect.toRect(),
+                      p.scaled(iconRect.size().toSize(), Qt::KeepAspectRatio,
+                               Qt::SmoothTransformation));
+
+  // 绘制名称
+  painter->setPen(QPen(Qt::black));
+  painter->setFont(QFont("Arial", 10));
+  painter->drawText(nameRect, data.session_label_name);
+
+  // 绘制最新消息
+  painter->setPen(QPen(Qt::gray));
+  painter->drawText(msgRect, data.session_label_earily_msg);
+
+  // 绘制时间
+  painter->setPen(QPen(Qt::gray));
+  painter->drawText(timeRect, data.session_label_time);
+
+  painter->restore();
 }
 
 QSize SessionLabelDelegate::sizeHint(const QStyleOptionViewItem& option,
                                      const QModelIndex& index) const {
-  // return QStyledItemDelegate::sizeHint(option, index);
-  return QSize(200, 58l);
+   //return QStyledItemDelegate::sizeHint(option, index);
+  return QSize(250, 60);
 }
 
 SessionMenu::SessionMenu(QWidget* parent)
-//session_label_delegate_(new SessionLabelDelegate(this)),
-//  session_label_model_(new Data::SessionLabelModel(this))
-	{ init(); }
+    : QListView(parent),
+      session_label_delegate_(std::make_unique<SessionLabelDelegate>(this)),
+      session_label_model_(std::make_unique<Data::SessionLabelModel>(this)),
+      enterTimer(new QTimer(this)),
+      leaveTimer(new QTimer(this)),
+      isScrollBarVisible(false)
+{
+  init();
+  setupModel();
+}
 
 SessionMenu::~SessionMenu() {}
 
-void SessionMenu::init() {
-  qDebug() << "init";
-  //session_label_delegate_ = std::make_unique<SessionLabelDelegate>(this);
-  //this->setItemDelegate(session_label_delegate_.get());
-  //session_label_model_ = std::make_unique<Data::SessionLabelModel>(this);
-  //this->setModel(session_label_model_.get());
+bool SessionMenu::eventFilter(QObject* watched, QEvent* event) {
+  if (watched == this->viewport() || watched == this->verticalScrollBar()) {
+    if (event->type() == QEvent::Enter || event->type() == QEvent::MouseMove) {
+      leaveTimer->stop();
+      if (!isScrollBarVisible) {
+        enterTimer->start(100);
+      }
+    } else if (event->type() == QEvent::Leave) {
+      enterTimer->stop();
+      if (isScrollBarVisible) {
+        leaveTimer->start(100);
+      }
+    }
+  }
 
-  session_label_delegate_ = new SessionLabelDelegate(this);
-  this->setItemDelegate(session_label_delegate_);
-  session_label_model_ = new Data::SessionLabelModel(this);
-  this->setModel(session_label_model_);
+  if (watched == this->viewport() && event->type() == QEvent::Wheel) {
+    QWheelEvent* wheelEvent = static_cast<QWheelEvent*>(event);
+    int numDegrees = wheelEvent->angleDelta().y() / 8;
+    int numSteps = numDegrees / 15;
+    this->verticalScrollBar()->setValue(this->verticalScrollBar()->value() -
+                                        numSteps);
+
+    QScrollBar* scrollBar = this->verticalScrollBar();
+    int maxScrollValue = scrollBar->maximum();
+    int currentValue = scrollBar->value();
+    if (maxScrollValue - currentValue <= 0) {
+      //qDebug() << "到底了";
+      loadMoreData();
+    }
+    return true;
+  }
+
+  return QListView::eventFilter(watched, event);
 }
+
+void SessionMenu::loadMoreData() {
+  if (!session_label_model_->loadData(currentPage, pageSize))
+  {
+    return;
+  }
+  currentPage++;
+}
+
+void SessionMenu::showScrollBar() {
+  this->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+  isScrollBarVisible = true;
+}
+
+void SessionMenu::hideScrollBar() {
+  this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  isScrollBarVisible = false;
+}
+
+void SessionMenu::init() {
+  // session_label_delegate_ = std::make_unique<SessionLabelDelegate>(this);
+  // this->setItemDelegate(session_label_delegate_.get());
+  // session_label_model_ = std::make_unique<Data::SessionLabelModel>(this);
+  // this->setModel(session_label_model_.get());
+
+  // session_label_delegate_ = new SessionLabelDelegate(this);
+  this->setItemDelegate(session_label_delegate_.get());
+  // session_label_model_ = new Data::SessionLabelModel(this);
+  this->setModel(session_label_model_.get());
+  this->viewport()->installEventFilter(this);
+  this->verticalScrollBar()->installEventFilter(this);
+  this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+  enterTimer->setSingleShot(true);
+  leaveTimer->setSingleShot(true);
+  connect(enterTimer, &QTimer::timeout, this, &SessionMenu::showScrollBar);
+  connect(leaveTimer, &QTimer::timeout, this, &SessionMenu::hideScrollBar);
+
+  this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+}
+
+void SessionMenu::setupModel()
+{ loadMoreData(); }
 }  // namespace Window

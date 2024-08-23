@@ -11,6 +11,7 @@
 
 #include <QAbstractListModel>
 
+#include "storage/session_storage.h"
 
 #define tRole 0xf3f3
 
@@ -23,20 +24,21 @@ class SessionLabelModel : public QAbstractListModel {
   explicit SessionLabelModel(QObject *parent = nullptr);
   ~SessionLabelModel();
 
+  int loadData(int page, int page_size);
+
  protected:
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
   QVariant data(const QModelIndex &index, int role) const override;
 
- public:
+ public slots:
   void updateModel(const QModelIndex &index, const QDateTime &time);
 
  signals:
 
  private:
   void init();
-
-  //std::map<int64_t, CellData> m_userMap;
-  int64 all_record_;        // 所有的记录
+  QVector<StorageSessionLabel> data_;
+  //int64 all_record_;        // 所有的记录
 };
 
 } // namespace Data

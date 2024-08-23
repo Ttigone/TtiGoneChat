@@ -73,6 +73,14 @@
 #include <optional>
 
 
+// Layout
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+
+// Painter
+#include <QPainter>
+#include <QColor>
+
 #include <gsl/gsl>
 
 #include "base/basic_types.h"

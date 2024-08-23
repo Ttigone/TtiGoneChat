@@ -14,13 +14,14 @@ set(PROJECT_SOURCES
     src/settings.h src/settings.cpp
 
     src/ui/chat/message_bubble.h src/ui/chat/message_bubble.cpp
-    src/ui/widgets/fields/auto_complete_input_field.h src/ui/widgets/fields/auto_complete_input_field.cpp
     src/ui/widgets/self_window.h src/ui/widgets/self_window.cpp
     src/ui/widgets/windowbar.h src/ui/widgets/windowbar.cpp
     src/ui/widgets/windowbar_p.h 
     src/ui/widgets/windowbar_button.h src/ui/widgets/windowbar_button.cpp
     src/ui/widgets/windowbar_button_p.h 
     src/ui/set_style.h src/ui/set_style.cpp
+    src/ui/widgets/fields/auto_complete_input_field.h src/ui/widgets/fields/auto_complete_input_field.cpp
+    src/ui/widgets/fields/completer_field.h src/ui/widgets/fields/completer_field.cpp
 
     src/local/account.h src/local/account.cpp
     src/local/domain.h src/local/domain.cpp
@@ -73,10 +74,15 @@ set(PROJECT_SOURCES
 
     src/media/view/open_common.h
     src/media/view/overlay_widget.h src/media/view/overlay_widget.cpp
+
+
+    src/history/history_widget.h src/history/history_widget.cpp
 )
 
 # 仅拷贝
 configure_file(src/window/window_config.json window_config.json  COPYONLY)
+configure_file(src/settings/databases/config.ini config.ini COPYONLY)
+
 
 
 get_filename_component(src_loc src REALPATH)
@@ -94,7 +100,9 @@ set(RES_QRC
 qt_add_executable(TtiGoneChat
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        res/TtigoneChat.qrc
+        # res/TtigoneChat.qrc
+        ${RES_QRC}
+
         # lib_base/base/basic_types.h
     )
 # Define target properties for Android with Qt 6 as:
@@ -147,6 +155,10 @@ target_link_libraries(TtiGoneChat
 )
 
 target_precompile_headers(TtiGoneChat PRIVATE $<$<COMPILE_LANGUAGE:CXX,OBJCXX>:${src_loc}/stdafx.h>)
+
+install(TARGETS TtiGoneChat DESTINATION bin)
+
+install(FILES src/settings/databases/config.ini DESTINATION etc)
 
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

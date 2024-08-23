@@ -31,6 +31,8 @@ class SessionLabelDelegate : public QStyledItemDelegate {
   // 大小
   QSize sizeHint(const QStyleOptionViewItem &option,
                  const QModelIndex &index) const override;
+private:
+  mutable QHash<QString, QPixmap> icon_cache;
 };
 
 class SessionMenu : public QListView {
@@ -39,21 +41,29 @@ class SessionMenu : public QListView {
   explicit SessionMenu(QWidget *parent = nullptr);
   ~SessionMenu();
 
- private:
-  void init();
+
+ protected:
+  bool eventFilter(QObject *watched, QEvent *event) override;
 
  signals:
   void chatChanged(int64_t index);
 
+private slots:
+  void loadMoreData();
+  void showScrollBar();
+  void hideScrollBar();
+
  private:
-  //std::unique_ptr<SessionLabelDelegate> session_label_delegate_;
-  //std::unique_ptr<Data::SessionLabelModel> session_label_model_;
+  void init();
+  void setupModel();
 
-  //not_null<SessionLabelDelegate *> session_label_delegate_;
-  //not_null<Data::SessionLabelModel *> session_label_model_;
-
-  SessionLabelDelegate * session_label_delegate_;
-  Data::SessionLabelModel * session_label_model_;
+  std::unique_ptr<SessionLabelDelegate> session_label_delegate_;
+  std::unique_ptr<Data::SessionLabelModel> session_label_model_;
+  QPointer<QTimer> enterTimer;
+  QPointer<QTimer> leaveTimer;
+  bool isScrollBarVisible = false;
+  int currentPage = 0;
+  const int pageSize = 20;  // 每页 20 条数据
 };
 
 }  // namespace Window
