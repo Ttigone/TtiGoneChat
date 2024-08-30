@@ -365,3 +365,5 @@ FodyWeavers.xsd
 /build-TtiGoneChat-Desktop_Qt_6_4_3_MSVC2019_64bit-Debug
 /build
 /build-TtiGoneChat-Desktop_Qt_6_4_3_MSVC2019_64bit-Release
+/.idea
+/cmake-build-debug-visual-studio
