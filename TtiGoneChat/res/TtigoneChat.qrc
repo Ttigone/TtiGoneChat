@@ -27,6 +27,12 @@
         <file>ui/icons/mediaview/circle_close-normal.png</file>
         <file>ui/icons/mediaview/search-hover.png</file>
         <file>ui/icons/mediaview/search-normal.png</file>
+        <file>ui/icons/mediaview/detail-hover.png</file>
+        <file>ui/icons/mediaview/detail-normal.png</file>
+        <file>ui/icons/mediaview/fold-hover.png</file>
+        <file>ui/icons/mediaview/fold-normal.png</file>
+        <file>ui/icons/calls/phone-hover.png</file>
+        <file>ui/icons/calls/phone-normal.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file>themes/dark-style.qss</file>

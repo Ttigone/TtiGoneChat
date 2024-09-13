@@ -38,9 +38,11 @@ target_sources(lib_ui PRIVATE
         ui/widgets/popup_menu.h ui/widgets/popup_menu.cpp
         ui/effects/animation_value.h ui/effects/animation_value.cpp
 
-        ui/widgets/fields/customize_fields.cpp ui/widgets/fields/customize_fields.h
-        ui/widgets/message_textedit.cpp ui/widgets/message_textedit.h
-        ui/widgets/snack_bar.cpp ui/widgets/snack_bar.h
+        ui/widgets/fields/customize_fields.h ui/widgets/fields/customize_fields.cpp
+        ui/widgets/message_textedit.h ui/widgets/message_textedit.cpp
+        ui/widgets/snack_bar.h ui/widgets/snack_bar.cpp
+
+        ui/widgets/fields/customize_edit.h ui/widgets/fields/customize_edit.cpp
 
 )
 

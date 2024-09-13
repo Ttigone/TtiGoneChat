@@ -1,17 +1,32 @@
-#include "media/view/overlay_widget.h"
+﻿#include "media/view/overlay_widget.h"
 
+
+#include "window/session_controller.h"
 #include "window/sidebar.h"
 #include "window/window_media_preview.h"
 #include "window/window_session_menu.h"
-#include "window/session_controller.h"
+#include "window/window_stack.h"
 
 #include "layout/horizontal_layout.h"
 
 #include "ui/widgets/fields/completer_field.h"
+#include "ui/widgets/fields/customize_edit.h"
 
 
-#include <QLabel>
+#include "data/data_document.h"
+#include "data/data_session_label.h"
+#include "data/data_talk.h"
+#include "data/data_talk_init.h"
+#include "local/user_account.h"
+#include "storage/history_storage.h"
+
+
+#include <memory>
 #include <QVBoxLayout>
+#include <QTextEdit>
+#include <QSplitter>
+#include <QStackedWidget>
+
 
 //namespace Window {
 //
@@ -19,14 +34,18 @@
 //
 //} // namespace Window
 
-
 namespace Media {
 namespace View {
 
 OverlayWidget::OverlayWidget(QWidget* parent)
     : widget_(new Ui::MbWidget(this)),
       main_layout_(new QHBoxLayout()),
-      window_(new Ui::MbWindow(this))
+      completer_field_(new Window::CompleterField(this)),
+      session_menu_(new Window::SessionMenu(this)),
+      window_(new Ui::MbWindow(this)),
+    //input_edit_(new QTextEdit(this))
+    input_edit_(new Ui::CustomizeTextEdit(this))
+//stack_(std::make_shared<Window::MediaStackWidget>())
 {
   widget_->setLayout(main_layout_);
   main_layout_->setContentsMargins(QMargins());
@@ -45,50 +64,69 @@ OverlayWidget::OverlayWidget(QWidget* parent)
   side_bar_ = std::make_unique<Window::SideBar>();
   main_layout_->addWidget(side_bar_.get(), Qt::AlignLeft);
 
-  // QWidget * widget = new QWidget();
-  // widget->setMinimumWidth(30);
-  // widget->setStyleSheet("background-color:Coral");
-  // window_->setFixedWidth(30);
-  // qDebug() << window_->minimumWidth();
+  QVBoxLayout* t_layout = new QVBoxLayout();
 
-  // main_layout_->addStretch();
-  // main_layout_->addWidget(window_, Qt::AlignHCenter);
+  session_menu_->setMinimumWidth(200);
 
-  // const not_null<Ui::MbWidget*> window_ = new Ui::MbWidget(this);
-  // window_->setStyleSheet("background-color:Coral");
-  // qDebug() << window_->geometry();
-  // const not_null<Ui::MbWidget*> window_ = new Ui::MbWidget(this);
-  // window_->setFixedWidth(30);
-
-  //window_->setStyleSheet("background-color:Coral");
-  //main_layout_->addWidget(window_);
-
-  QVBoxLayout *t_layout = new QVBoxLayout();
-
-  //Ui::Widgets::*t_input = new Ui::Widgets::CustomizeFields(this);
-  Window::CompleterField *t_input = new Window::CompleterField(this);
-
-
-
-
-  Window::SessionMenu* t_menu = new Window::SessionMenu(this);
-  t_menu->setMinimumWidth(200);
-  //t_menu->setStyleSheet("QListView { border: none; }");
-
-  t_layout->addWidget(t_input);
-  t_layout->addWidget(t_menu);
+  t_layout->addWidget(completer_field_);
+  t_layout->addWidget(session_menu_);
 
   main_layout_->addLayout(t_layout);
-  //main_layout_->addWidget(t_menu);
+
+  // 谈论数据
+  std::shared_ptr<Data::TextTalkData> o1 =
+      std::make_shared<Data::TextTalkData>(2, "sdsadasdas", 0, 2);
+
+  // 有一个文档信息, 存储了聊天内容
+  std::shared_ptr<Data::DocumentData> test =
+      std::make_shared<Data::DocumentData>();
+
+  // 信息发送者
+  // 根据 发送者建立一张表
+  test->setUid(1);
+
+  test->setName("TEST");
+  test->appendChagMsg(o1);
+  qDebug() << QDateTime::currentDateTime().toString(Qt::ISODate);
+
+  Data::HistoryData t(o1->getMsgId(), 0, o1->getFromUid(), o1->getToUid(),
+                o1->getMsgContent(), QString("TEST"));
+
+  Storage::InsertHistoryData(t);
+
+  Storage::readHistoryData(0);
+
+  
+
+  //auto& stack_ = Window::MediaStackWidget::Instance();
+  //main_layout_->addWidget(stack_.body());
+
+  QSplitter *splitter = new QSplitter(Qt::Vertical, this);
+  // 获取了所有权
+  //splitter->addWidget(stack_.body());
+  // 使用信号槽机制
+  splitter->addWidget(Window::MediaStackWidget::Instance().body());
+
+  input_edit_->setPlaceholderText("Your Message");
+  //input_edit_->setTextColor(Qt::blue);
 
 
+  splitter->addWidget(input_edit_.get());
 
-  //Window::MediaPreviewWidget *t_window = new Window::MediaPreviewWidget(this, Window::SessionController());
-  Window::MediaPreviewWidget* t_window = new Window::MediaPreviewWidget(this);
-  t_window->setMinimumWidth(100);
-  t_window->setStyleSheet("background-color: #a9beae");
+  main_layout_->addWidget(splitter);
 
-  main_layout_->addWidget(t_window);
+  connect(session_menu_, &QListView::clicked,
+          //[&stack_, this](const QModelIndex& index) {
+          [this](const QModelIndex& index) {
+            if (index.isValid()) {
+              auto q = qvariant_cast<Data::SessionLabelData>(
+                  session_menu_->model()->data(index, tRole));
+              qDebug() << "index : " << q.id_;
+              // 切换的时候采取加载 ???
+              // 动态加载
+              //stack_.body()->setCurrentIndex(q.id_);
+            }
+          });
 }
 
 OverlayWidget::~OverlayWidget() = default;

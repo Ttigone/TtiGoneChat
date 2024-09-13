@@ -125,30 +125,41 @@ QWidget[custom-style=true] {
 /* QScrollBar */
 
 QScrollBar:vertical {
-	background: transparent; /*¹ìµÀ±³¾°µÄ±³¾°É«*/
-	width: 8px; /*¹ö¶¯ÌõµÄ¿í¶È*/
-	margin: 0px; /* ÒÆ³ı¹ö¶¯ÌõÓë »¬¿éµÄ¼ä¾à */
+	background: transparent; /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½ï¿½É«*/
+	width: 8px; /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½*/
+	margin: 0px; /* ï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ */
 }
 
 QScrollBar::handle:vertical {
-	background: rgb(173, 170, 169); /*»¬¿éµÄÑÕÉ«*/
-	min-height: 10px; /*»¬¿éµÄ×îĞ¡¸ß¶È*/
-	border-radius: 4px;/*»¬¿éµÄÔ²½Ç*/
+	background: rgb(173, 170, 169); /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«*/
+	min-height: 10px; /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¡ï¿½ß¶ï¿½*/
+	border-radius: 4px;/*ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½*/
 }
 
 QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
-	height: 0px; /*ÉÏÏÂ°´Å¥*/
-  border: none; /*È¥µô±ß¿ò*/
-  background: transparent; /*±³¾°Í¸Ã÷*/
+	height: 0px; /* é«˜åº¦Â°ï¿½Å¥*/
+  border: none; /* è¾¹è· */
+  background: transparent; /* è®¾ç½®é€æ˜åº¦ */
 }
 
 
 QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
-  background: transparent; /*Ò³Ãæ¹ö¶¯²¿·Ö±³¾°Í¸Ã÷*/
+  background: transparent; /**/
 }
 
 /* QListView */
 QListView {
 background-color: transparent;
 		border: none;
+}
+
+/* Self */
+#history_scroll_area {
+    background-color: #f0f0f0;
+		border: 0px;
+}
+
+
+#history_basic {
+    background-color: #f0f0f0;
 }

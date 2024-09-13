@@ -3,9 +3,7 @@
 
 // #endif // STDAFX_H
 
-
 #define __HUGE
-
 
 #ifdef __cplusplus
 
@@ -14,81 +12,79 @@
 #include <QMap>
 
 // QtCore
-#include <QtMath>
-#include <QObject>
-#include <QPointer>
-#include <QMutex>
-#include <QReadWriteLock>
+#include <QByteArray>
+#include <QChar>
 #include <QDataStream>
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
-#include <QThread>
-#include <QByteArray>
-#include <QChar>
-#include <QDateTime>
 #include <QHash>
-#include <QMargins>
 #include <QList>
+#include <QMargins>
+#include <QMutex>
+#include <QObject>
 #include <QPair>
 #include <QPoint>
+#include <QPointer>
+#include <QReadWriteLock>
 #include <QRect>
 #include <QRegularExpression>
 #include <QSet>
 #include <QSize>
 #include <QString>
 #include <QStringList>
+#include <QThread>
 #include <QVector>
-#include <QDir>
+#include <QtMath>
 
 // QtGui
+#include <QBrush>
+#include <QColor>
+#include <QFont>
+#include <QFontInfo>
 #include <QIcon>
 #include <QImage>
 #include <QImageReader>
-#include <QPixmap>
-#include <QtEvents>
-#include <QBrush>
-#include <QColor>
 #include <QPainterPath>
 #include <QPen>
+#include <QPixmap>
 #include <QRegion>
 #include <QRgb>
-#include <QFont>
-#include <QFontInfo>
+#include <QtEvents>
 
 // QWidget
+#include <QLabel>
 #include <QWidget>
 #include <QtOpenGLWidgets/QOpenGLWidget>
 
+#include <algorithm>
+#include <any>
 #include <array>
-#include <vector>
 #include <deque>
-#include <set>
 #include <map>
+#include <memory>
+#include <optional>
+#include <set>
 #include <unordered_map>
 #include <unordered_set>
-#include <algorithm>
-#include <memory>
-#include <any>
-#include <optional>
-
+#include <vector>
 
 // Layout
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
 // Painter
-#include <QPainter>
 #include <QColor>
+#include <QPainter>
+#include <QStyleOption>
 
 #include <gsl/gsl>
 
 #include "base/basic_types.h"
-#include "base/invoke_queued.h"
 #include "base/debug_log.h"
-
+#include "base/invoke_queued.h"
 
 #include "config.h"
 
-
-#endif // __cplusplus
+#endif  // __cplusplus

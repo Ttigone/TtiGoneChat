@@ -1,12 +1,12 @@
 ﻿#include "window/window_session_menu.h"
 
-
 #include "data/data_session_label.h"
+#include "data/data_talk_init.h"
 #include "storage/session_storage.h"
 
 #include <QPainter>
-#include <QScrollBar>
 #include <QPointer>
+#include <QScrollBar>
 
 #include <QTimer>
 
@@ -24,9 +24,9 @@ void SessionLabelDelegate::paint(QPainter* painter,
   // 超出范围 vector
   QVariant var = index.data(tRole);
   //  // 转换成对应类型的数据
-  auto data = var.value<StorageSessionLabel>();
+  Data::SessionLabelData data = var.value<Data::SessionLabelData>();
 
-   const QRectF rect(option.rect.x(), option.rect.y(), option.rect.width(),
+  const QRectF rect(option.rect.x(), option.rect.y(), option.rect.width(),
                     option.rect.height());
 
   // int scrollBarWidth =
@@ -36,22 +36,22 @@ void SessionLabelDelegate::paint(QPainter* painter,
   // int fixedWidth = option.rect.width() - scrollBarWidth - 1;
 
   QPainterPath path;
-	path.addRoundedRect(rect, 0, 0);
+  path.addRoundedRect(rect, 0, 0);
 
-
-	painter->setPen(QPen(Qt::NoPen));
+  painter->setPen(QPen(Qt::NoPen));
   // 当前被选中
   if (option.state.testFlag(QStyle::State_Selected)) {
-    painter->setBrush(QBrush(QColor("#e3e3e5")));
+    painter->setBrush(QBrush(QColor("#2e333d")));
   }
   // 鼠标移动到上面
   else if (option.state.testFlag(QStyle::State_MouseOver)) {
-    painter->setBrush(QBrush(QColor("#ebeced")));
-  } else
-  {
-    painter->setBrush(QBrush(Qt::NoBrush));
+    painter->setBrush(QBrush(QColor("#272b33")));
+  } else {
+    //painter->setBrush(QBrush(Qt::NoBrush));
+    // 默认状态
+    painter->setBrush(QBrush(QColor("#202329")));
   }
-	painter->drawPath(path);
+  painter->drawPath(path);
 
   // 设定图片, 名称, 最新消息, 时间 的位置
   QRectF iconRect = QRectF(rect.x() + 6, rect.y() + 11, 35, 35);
@@ -64,13 +64,11 @@ void SessionLabelDelegate::paint(QPainter* painter,
   QRectF timeRect = QRectF(rect.width() - 60, iconRect.top(), 60, 20);
 
   QPixmap p;
-  if (icon_cache.contains(data.session_label_icon_path))
-  {
-    p = icon_cache.value(data.session_label_icon_path);
-  } else
-  {
-    p = QPixmap(data.session_label_icon_path);
-    icon_cache.insert(data.session_label_icon_path, p);
+  if (icon_cache.contains(data.icon_path_)) {
+    p = icon_cache.value(data.icon_path_);
+  } else {
+    p = QPixmap(data.icon_path_);
+    icon_cache.insert(data.icon_path_, p);
   }
   painter->drawPixmap(iconRect.toRect(),
                       p.scaled(iconRect.size().toSize(), Qt::KeepAspectRatio,
@@ -79,22 +77,22 @@ void SessionLabelDelegate::paint(QPainter* painter,
   // 绘制名称
   painter->setPen(QPen(Qt::black));
   painter->setFont(QFont("Arial", 10));
-  painter->drawText(nameRect, data.session_label_name);
+  painter->drawText(nameRect, data.name_);
 
   // 绘制最新消息
   painter->setPen(QPen(Qt::gray));
-  painter->drawText(msgRect, data.session_label_earily_msg);
+  painter->drawText(msgRect, data.earily_msg_);
 
   // 绘制时间
   painter->setPen(QPen(Qt::gray));
-  painter->drawText(timeRect, data.session_label_time);
+  painter->drawText(timeRect, data.time_);
 
   painter->restore();
 }
 
 QSize SessionLabelDelegate::sizeHint(const QStyleOptionViewItem& option,
                                      const QModelIndex& index) const {
-   //return QStyledItemDelegate::sizeHint(option, index);
+  //return QStyledItemDelegate::sizeHint(option, index);
   return QSize(250, 60);
 }
 
@@ -104,8 +102,7 @@ SessionMenu::SessionMenu(QWidget* parent)
       session_label_model_(std::make_unique<Data::SessionLabelModel>(this)),
       enterTimer(new QTimer(this)),
       leaveTimer(new QTimer(this)),
-      isScrollBarVisible(false)
-{
+      isScrollBarVisible(false) {
   init();
   setupModel();
 }
@@ -148,8 +145,7 @@ bool SessionMenu::eventFilter(QObject* watched, QEvent* event) {
 }
 
 void SessionMenu::loadMoreData() {
-  if (!session_label_model_->loadData(currentPage, pageSize))
-  {
+  if (!session_label_model_->loadData(currentPage, pageSize)) {
     return;
   }
   currentPage++;

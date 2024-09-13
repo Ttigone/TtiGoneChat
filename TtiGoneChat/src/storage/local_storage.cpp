@@ -1,13 +1,19 @@
 ﻿#include "storage/local_storage.h"
 
+#include "storage/history_storage.h"
+#include "storage/session_storage.h"
+
 #include "config.h"
 #include "base/debug_log.h"
 #include "core/application.h"
-#include "window/controller.h"
+#include "local/user_account.h"
 
 #include "window/themes/window_theme.h"
 
-#include "storage/session_storage.h"
+
+#include <QSettings>
+
+DatabaseConfig dbcg;
 
 namespace Window
 {
@@ -21,16 +27,30 @@ namespace Window
 namespace Storage
 {
 
-void start()
-{
+
+void start() {
   LOG_DEBUG() << "读取设置";
   LoadConfigFile();
-	InitialLoadTheme();
-	readLangPack();
+  InitialLoadTheme();
+  readLangPack();
 
-	Storage::writeSessionLabelLocation();
+  ReadDataBaseConfig();
+
+
+  Storage::CreateSessionLabelTable();
+
+  //Storage::writeSessionLabelLocation();
 
   Storage::readStorageSessionLabelLocation();
+
+  Storage::CreateHistoryDataTable(dbcg);
+
+  // 设置信息传来的用户信息
+  // 本地用戶
+  Local::UserAccount::Instance()->SetUserInfo(
+      std::make_shared<Data::DocumentData>(
+          0, "USER1", ":/chat/private/boy_7.jpg", 1, "LASTMSG"));
+
 
 }
 
@@ -79,6 +99,34 @@ bool ApplyDefaultNightMode()
 	return true;
 }
 
+
+
+DatabaseConfig readDatabaseConfig(const QString& file_path) {
+  if (QFile::exists(file_path)) {
+    LOG_INFO() << QObject::tr("数据库配置相关文件存在");
+    QSettings settings(file_path, QSettings::IniFormat);
+    settings.beginGroup("Database");
+    DatabaseConfig config;
+    config.name = settings.value("name").toString();
+    //config.table = settings.value("table").toString();
+    config.host = settings.value("host").toString();
+    config.port = settings.value("port").toInt();
+    config.user = settings.value("user").toString();
+    config.password = settings.value("password").toString();
+    settings.endGroup();
+    return config;
+  } else {
+    LOG_FATAL() << QObject::tr("数据库配置相关文件不存在");
+    return {};
+  }
+}
+
+
+void ReadDataBaseConfig() {
+
+  dbcg = readDatabaseConfig(
+      "F:/MyProject/TtiGoneChat/TtiGoneChat/src/settings/databases/config.ini");
+}
 
 
 } // namespace Storage

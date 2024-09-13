@@ -15,17 +15,25 @@
 #include "ui/mb_widget.h"
 #include "ui/widgets/mb_window.h"
 
+#include <QTextEdit>
+
 
 namespace Layout
 {
 class HorizontalLayout;
 } // namespace Layout
 
-namespace Window
-{
-	class SideBar;
-} // namespace Window 
+namespace Window {
+class SideBar;
+class MediaStackWidget;
+class CompleterField;
+class SessionMenu;
+}  // namespace Window 
 
+
+namespace Ui {
+class CustomizeTextEdit;
+} // namespace Ui
 
 namespace Media {
 
@@ -66,7 +74,14 @@ class OverlayWidget final : public QWidget {
 
   std::unique_ptr<Window::SideBar> side_bar_;
 
+  const not_null<Window::CompleterField *> completer_field_;
+  const not_null<Window::SessionMenu *> session_menu_;
+
   const not_null<Ui::MbWindow *> window_;
+
+  const not_null<Ui::CustomizeTextEdit*> input_edit_;
+
+  std::shared_ptr<Window::MediaStackWidget> stack_;
 };
 
 }  // namespace View

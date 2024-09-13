@@ -1,6 +1,6 @@
 {
-  "windowMinWidth" : 380,
-  "windowMinHeight" : 480,
+  "windowMinWidth" : 480,
+  "windowMinHeight" : 580,
   "windowDefaultWidth" : 800,
   "windowDefaultHeight" : 600,
   "windowBigDefaultWidth" : 1024,

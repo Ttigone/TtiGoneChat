@@ -81,11 +81,11 @@ class MBWidgetHelper : public Base {
 
 
 class MbWidget : public MBWidgetHelper<QWidget> {
-//class MbWidget : public QWidget {
+  //class MbWidget : public QWidget {
   // 添加这个宏时， 可能会使 样式表无效
   //Q_OBJECT
  public:
-  MbWidget(QWidget *parent = nullptr);
+  MbWidget(QWidget* parent = nullptr);
 
   virtual int naturalWidth() const { return -1; }
 
@@ -106,12 +106,20 @@ class MbWidget : public MBWidgetHelper<QWidget> {
     resizeToWidth((natural > 0) ? qMin(new_width, natural) : new_width);
   }
 
+  /// @brief 减去原生的 margin
+  /// @return 返回没有 margin 的 size
   QRect rectNoMargins() const { return rect().marginsRemoved(getMargins()); }
 
+  /// @brief 获取没有 margin 的宽度(r 宽度)
+  /// @return r宽度
   int widthNoMargins() const { return rectNoMargins().width(); }
 
+  /// @brief 获取没有 margin 的高度(h 高度)
+  /// @return h高度
   int heightNoMargins() const { return rectNoMargins().height(); }
 
+  /// @brief 
+  /// @return 
   int bottomNoMargins() const {
     auto rectWithoutMargins = rectNoMargins();
     return y() + rectWithoutMargins.y() + rectNoMargins().height();
@@ -125,7 +133,7 @@ class MbWidget : public MBWidgetHelper<QWidget> {
   }
 
  protected:
-  void setChildVisibleTopBottom(MbWidget *child, int visble_top,
+  void setChildVisibleTopBottom(MbWidget* child, int visble_top,
                                 int visible_bottom) {
     if (child) {
       auto top = child->y();
@@ -136,7 +144,6 @@ class MbWidget : public MBWidgetHelper<QWidget> {
   virtual int resizeGetHieght() const { return heightNoMargins(); }
 
   virtual void visibleTopBottomUpdated(int visible_top, int visible_bottom) {}
-
 };
 
 

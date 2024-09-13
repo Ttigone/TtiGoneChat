@@ -1,24 +1,45 @@
-/*****************************************************************//**
+/*****************************************************************/ /**
  * \file   chat_item.h
  * \brief  
  * 
  * \author cssss
- * \date   08 2024
+ * \date   August 2024
  *********************************************************************/
 
-//
-// Created by cssss on 2024-08-23.
-//
+#ifndef UI_CHAT_ITEM_H
+#define UI_CHAT_ITEM_H
 
-#ifndef CHAT_ITEM_H
-#define CHAT_ITEM_H
+#include <data/data_talk.h>
+
+#include <QTextEdit>
+
+
+namespace Data {}  // namespace Data
+
+namespace Ui {
+class ChatItemBase : public QWidget {
+  Q_OBJECT
+ public:
+  explicit ChatItemBase(Data::TalkPropertyData role, QWidget* parent = nullptr);
+  void setUserName(const QString& name);
+  void setUserIcon(const QPixmap& icon);
+  void setWidget(QWidget* w);
 
 
 
-class chat_item {
+ private:
+  /// @brief 初始化操作
+  //void init(const QString &text);
+  void init();
 
+  Data::TalkPropertyData role_;
+  QLabel* name_label_;
+  QLabel* icon_label_;
+  QWidget* bubble_;
+
+  //QString text_;
+  //QTextEdit* text_edit_;
 };
+}  // namespace Ui
 
-
-
-#endif //CHAT_ITEM_H
+#endif  // UI_CHAT_ITEM_H

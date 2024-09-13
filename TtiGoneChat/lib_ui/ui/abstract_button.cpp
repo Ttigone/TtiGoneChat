@@ -12,6 +12,11 @@ AbstractButton::AbstractButton(QWidget* parent) : QWidget(parent) {
   setMouseTracking(true);
 }
 
+AbstractButton::AbstractButton(const int &w, const int &h, QWidget* parent) : QWidget(parent) {
+  initialSize(w, h);
+  setMouseTracking(true);
+}
+
 AbstractButton::AbstractButton(const QImage& image, QWidget* parent)
     : AbstractButton(parent) {
   setImage(image);
@@ -26,9 +31,22 @@ AbstractButton::AbstractButton(const QImage& normal_image, const QImage& entry_i
 	: AbstractButton(parent)
 {setImage(normal_image, entry_image);}
 
+AbstractButton::AbstractButton(const int &w, const int &h, const QImage& normal_image, const QImage& entry_image, QWidget* parent)
+	//: AbstractButton(parent)
+	: AbstractButton(w, h, parent)
+{setImage(normal_image, entry_image);}
+
+
 AbstractButton::AbstractButton(const QString& normal_image_path,
                                const QString& entry_image_path, QWidget* parent)
     : AbstractButton(parent) {
+  setImage(QImage(normal_image_path), QImage(entry_image_path));
+}
+
+AbstractButton::AbstractButton(const int &w, const int &h, const QString& normal_image_path,
+                               const QString& entry_image_path, QWidget* parent)
+    //: AbstractButton(parent) {
+    : AbstractButton(w, h, parent) {
   setImage(QImage(normal_image_path), QImage(entry_image_path));
 }
 

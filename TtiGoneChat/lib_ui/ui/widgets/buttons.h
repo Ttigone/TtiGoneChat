@@ -21,19 +21,19 @@ namespace Ui {
 
 class CommonButton : public AbstractButton {
  public:
-  explicit CommonButton(QWidget *parent = nullptr);
-  explicit CommonButton(const QImage &image, QWidget *parent = nullptr);
-  explicit CommonButton(const QString &image_path, QWidget *parent = nullptr);
-  explicit CommonButton(const QImage &normal_image, const QImage &entry_image, QWidget *parent = nullptr);
-  explicit CommonButton(const QString &normal_image_path, const QString &entry_image_path, QWidget *parent = nullptr);
+  CommonButton(QWidget *parent = nullptr);
+  CommonButton(const QImage &image, QWidget *parent = nullptr);
+  CommonButton(const QString &image_path, QWidget *parent = nullptr);
+  CommonButton(const QImage &normal_image, const QImage &entry_image, QWidget *parent = nullptr);
+  CommonButton(const int &w, const int &h, const QImage &normal_image, const QImage &entry_image, QWidget *parent = nullptr);
+  CommonButton(const QString &normal_image_path, const QString &entry_image_path, QWidget *parent = nullptr);
+  CommonButton(const int &w, const int &h, const QString &normal_image_path, const QString &entry_image_path, QWidget *parent = nullptr);
   ~CommonButton();
 protected:
   void paintEvent(QPaintEvent *event) override;
 
 };
 
-
-//class ConnerButton : public QWidget {
 class ConnerButton : public AbstractButton {
   Q_OBJECT
   Q_PROPERTY(QRectF rect READ rect WRITE setRect)

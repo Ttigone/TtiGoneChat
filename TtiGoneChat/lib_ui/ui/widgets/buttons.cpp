@@ -24,9 +24,19 @@ CommonButton::CommonButton(const QImage& normal_image,
     : AbstractButton(normal_image, entry_image, parent) {
 }
 
+CommonButton::CommonButton(const int &w, const int &h, const QImage& normal_image,
+                           const QImage& entry_image, QWidget* parent)
+    : AbstractButton(w, h, normal_image, entry_image, parent) {
+}
+
 CommonButton::CommonButton(const QString& normal_image_path,
                            const QString& entry_image_path, QWidget* parent)
     : AbstractButton(normal_image_path, entry_image_path, parent) {
+}
+
+CommonButton::CommonButton(const int &w, const int &h, const QString& normal_image_path,
+                           const QString& entry_image_path, QWidget* parent)
+    : AbstractButton(w, h, normal_image_path, entry_image_path, parent) {
 }
 
 CommonButton::~CommonButton() {}

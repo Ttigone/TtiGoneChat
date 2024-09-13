@@ -16,10 +16,13 @@ namespace Ui {
 class AbstractButton : public QWidget {
  public:
   AbstractButton(QWidget* parent = nullptr);
+  AbstractButton(const int &w, const int &h, QWidget* parent = nullptr);
   AbstractButton(const QImage &image, QWidget* parent = nullptr);
   AbstractButton(const QString &image_path, QWidget* parent = nullptr);
   AbstractButton(const QImage &normal_image, const QImage &entry_image, QWidget* parent = nullptr);
+  AbstractButton(const int &w, const int &h, const QImage &normal_image, const QImage &entry_image, QWidget* parent = nullptr);
   AbstractButton(const QString &normal_image_path, const QString &entry_image_path, QWidget* parent = nullptr);
+  AbstractButton(const int &w, const int &h, const QString &normal_image_path, const QString &entry_image_path, QWidget* parent = nullptr);
   virtual ~AbstractButton();
 
   /// @brief 设置按钮的状态

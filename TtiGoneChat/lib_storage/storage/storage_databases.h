@@ -14,6 +14,8 @@
 #include <QtSql/QSqlQuery>
 #include <type_traits>
 
+#include "base/singleton.h"
+
 // 定义宏来获取结构体成员的名称和类型
 #define MEMBER_TYPE_AND_NAME(type, member) \
   { #member, offsetof(type, member), typeid(type::member).name() }
@@ -44,20 +46,24 @@ inline std::vector<MemberTypeAndName> getStructMembers() {
 inline QString CppTypeToSqliteType(const QString& cpp_type) {
   if (cpp_type == typeid(QString).name()) {
     return "TEXT";
-  } else if (cpp_type == typeid(int64).name() ||
-             cpp_type == typeid(int).name()) {
+  } else if (cpp_type == typeid(int64).name()) {
+    return "BIGINT";
+  } else if (cpp_type == typeid(int).name()) {
     return "INTEGER";
   } else if (cpp_type == typeid(double).name()) {
     return "REAL";
+  } else if (cpp_type == typeid(QDateTime).name()) {
+    return "DATETIME";
   } else {
     return "BLOB";
   }
 }
 
 // 生成插入数据的 SQL 语句
-QString generateQueryString(const QString& table_name, const QString& columns,
-                            const QString& values) {
-  QString query = "Insert INTO" + table_name + " (" + columns + ") VALUES (" +
+inline QString generateQueryString(const QString& table_name,
+                                   const QString& columns,
+                                   const QString& values) {
+  QString query = "Insert INTO " + table_name + " (" + columns + ") VALUES (" +
                   values + ");";
   return query;
 }
@@ -68,9 +74,14 @@ inline std::pair<QString, QString> generateCreateTableQuery(
   auto members = getStructMembers<T>();
   QString query = "CREATE TABLE " + table_name + " (";
 
-  // 字段名 + 字段类型
-  for (const auto& member : members) {
-    query += member.name + " " + CppTypeToSqliteType(member.type) + ", ";
+  //// 字段名 + 字段类型
+  //for (const auto& member : members) {
+  //  query += member.name + " " + CppTypeToSqliteType(member.type) + ", ";
+  //}
+  query += members.at(0).name + " " + CppTypeToSqliteType(members.at(0).type) +
+           " PRIMARY KEY, ";
+  for (auto i = members.begin() + 1; i != members.end(); ++i) {
+    query += i->name + " " + CppTypeToSqliteType(i->type) + ", ";
   }
   query.chop(2);  // 移除最后一个逗号和空格
   query += ");";
@@ -108,7 +119,7 @@ void bindMemberValues(QSqlQuery& query, const T& data,
     } else if (member.type == typeid(int64_t).name()) {
       query.bindValue(":" + member.name,
                       *reinterpret_cast<const int64_t*>(dataPtr));
-    })
+    }
   }
 }
 
@@ -116,30 +127,20 @@ void bindMemberValues(QSqlQuery& query, const T& data,
 template <typename T>
 void bindValues(QSqlQuery& query, const T& data) {
   auto members = getStructMembers<T>();
-  // for (const auto& member : members) {
-  //   const char* dataPtr = reinterpret_cast<const char*>(&data) + member.offset;
-  //   if (member.type == typeid(QString).name()) {
-  //     query.bindValue(":" + member.name,
-  //                     *reinterpret_cast<const QString*>(dataPtr));
-  //   } else if (member.type == typeid(int64_t).name()) {
-  //     query.bindValue(":" + member.name,
-  //                     *reinterpret_cast<const int64_t*>(dataPtr));
-  //   }
-  //   // 其他类型可以继续添加
-  // }
-  bindMemberValues(query, members);
+  bindMemberValues(query, data, members);
 }
 
 struct DatabaseConfig {
   QString name;
-  QString table;
+  //QString table;
   QString host;
   int port;
   QString user;
   QString password;
 
   [[nodiscard]] bool isValid() const {
-    return !name.isEmpty() && !table.isEmpty() && !host.isEmpty() && port > 0 &&
+    //return !name.isEmpty() && !table.isEmpty() && !host.isEmpty() && port > 0 &&
+    return !name.isEmpty() && !host.isEmpty() && port > 0 &&
            !user.isEmpty() && !password.isEmpty();
   }
 };
@@ -154,9 +155,10 @@ enum class DatabaseType : uchar {
 
 namespace storage {
 
-class Databases {
+class Databases : public base::Singleton<Databases>,
+                  public std::enable_shared_from_this<Databases> {
  public:
-  // static Databases &Instance();
+  friend class Singleton<Databases>;
   Databases(const DatabaseConfig& cfg);
   ~Databases();
 
@@ -168,9 +170,12 @@ class Databases {
   [[nodiscard]] bool createTable(const QString& query_sen,
                                  const QString& table_name);
 
+  [[nodiscard]] void exec(const QString &sen);
+
   template <typename T>
   [[nodiscard]] bool createTable(const QString& table_name) {
     auto tpair = generateCreateTableQuery<T>(table_name);
+    //qDebug() << tpair.first;
     setPrimaryKey(tpair.second);
 
     // 在开发过程中, 可能会导致 主键消失
@@ -208,9 +213,11 @@ class Databases {
     }
     QString queryStr = generateInsertQuery(table_name, data);
     QSqlQuery query(database_);
+    qDebug() << queryStr;
 
     query.prepare(queryStr);
     bindValues(query, data);
+    qDebug() << query.boundValues();
     if (!query.exec()) {
       qDebug() << "Failed to insert data:" << query.lastError().text();
     }
@@ -243,32 +250,34 @@ class Databases {
     }
   }
 
-  // 查询所有数据(根据主键)
+  // 查询所有数据(根据自定义字段)
   template <typename T>
-  std::optional<T> queryDataById(const QString& table_name, const int64& id) {
+  std::vector<T> queryDataByField(const QString& table_name, const QString &field, const int64& id) {
+    std::vector<T> rets;
     if (!database_.isOpen()) {
       LOG_FATAL()
           << "Error: Fail to delete data. Because the databases is not opened"
           << database_.lastError();
-      return std::nullopt;
+      return rets;
     }
-    qDebug() << primary_key_.toString();
     QString queryStr = QString("SELECT * FROM %1 WHERE %2 = :id")
                            .arg(table_name)
-                           .arg(primary_key_.toString());
+                           .arg(field);
     QSqlQuery query(database_);
-    qDebug() << queryStr;
     query.prepare(queryStr);
     query.bindValue(":id", id);
-    qDebug() << query.boundValues();
+    // 输出查询语句和绑定的值
+    //qDebug() << "Query String:" << queryStr;
+    //qDebug() << "Bound Values:" << query.boundValues();
 
     // 执行查询语句后, 使用 next() 遍历记录
     if (!query.exec()) {
       LOG_WARN() << "When query by id: " << id
                  << ".Failed to query data: " << query.lastError().text();
-      return std::nullopt;
+      return rets;
     }
-    if (query.next()) {
+    while (query.next()) {
+      //qDebug() << "has data";
       T data;
       // 获取结构体成员信息
       auto members = getStructMembers<T>();
@@ -278,12 +287,64 @@ class Databases {
         if (member.type == typeid(QString).name()) {
           *reinterpret_cast<QString*>(dataPtr) =
               query.value(member.name).toString();
-        } else if (member.type == typeid(int64_t).name()) {
-          *reinterpret_cast<int64_t*>(dataPtr) =
+        } else if (member.type == typeid(int64).name()) {
+          *reinterpret_cast<int64*>(dataPtr) =
               query.value(member.name).toLongLong();
         }
         // 添加其他类型
       }
+      rets.push_back(data);
+      //return data;
+    }
+    return rets;
+  }
+
+  // 查询所有数据(根据主键)
+  template <typename T>
+  std::optional<T> queryDataById(const QString& table_name, const int64& id) {
+    if (!database_.isOpen()) {
+      LOG_FATAL()
+          << "Error: Fail to delete data. Because the databases is not opened"
+          << database_.lastError();
+      return std::nullopt;
+    }
+    //qDebug() << primary_key_.toString();
+    QString queryStr = QString("SELECT * FROM %1 WHERE %2 = :id")
+                           .arg(table_name)
+                           .arg(primary_key_.toString());
+    QSqlQuery query(database_);
+    query.prepare(queryStr);
+    query.bindValue(":id", id);
+    // 输出查询语句和绑定的值
+    qDebug() << "Query String:" << queryStr;
+    qDebug() << "Bound Values:" << query.boundValues();
+
+    // 执行查询语句后, 使用 next() 遍历记录
+    if (!query.exec()) {
+      LOG_WARN() << "When query by id: " << id
+                 << ".Failed to query data: " << query.lastError().text();
+      return std::nullopt;
+    }
+    qDebug() << "ok";
+    if (query.next()) {
+      qDebug() << "has data";
+      T data;
+      // 获取结构体成员信息
+      auto members = getStructMembers<T>();
+      // dataPtr 指针解引用成指定的类型, 然后赋值
+      for (const auto& member : members) {
+        char* dataPtr = reinterpret_cast<char*>(&data) + member.offset;
+        if (member.type == typeid(QString).name()) {
+          *reinterpret_cast<QString*>(dataPtr) =
+              query.value(member.name).toString();
+        } else if (member.type == typeid(int64).name()) {
+          *reinterpret_cast<int64*>(dataPtr) =
+              query.value(member.name).toLongLong();
+        }
+        // 添加其他类型
+      }
+      //qDebug() << "yes111";
+      //qDebug() << 
       return data;
     }
     return std::nullopt;
@@ -416,8 +477,8 @@ class DataInserter {
 
   template <typename T>
   bool insertMultipleData(const QString& tableName,
-                          const std::vector<T> &dataList) {
-    for (const auto &data : dataList) {
+                          const std::vector<T>& dataList) {
+    for (const auto& data : dataList) {
       if (!insertSingleData(tableName, data)) {
         return false;
       }
@@ -426,7 +487,7 @@ class DataInserter {
   }
 
  private:
-  const not_null<Databases *> db_;
+  const not_null<Databases*> db_;
 };
 
 }  // namespace storage
